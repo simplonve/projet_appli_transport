@@ -10,6 +10,7 @@ from kivy.core.window import Window
 from kivy.uix.widget import Widget
 from kivy.uix.button import Button
 from kivy.uix.label import Label
+from kivy.clock import Clock
 from kivy.uix.textinput import TextInput
 from kivy.graphics import Color, Rectangle
 from kivy.uix.floatlayout import FloatLayout
@@ -18,21 +19,22 @@ from kivy.properties import NumericProperty, ReferenceListProperty,\
 
 Window.size = (1280, 700)
 
-class Widgets(Widget):
-	pass
+class Timer(Label):
+    def update(self, *args):
+        self.text = strftime("%H:%M:%S", localtime())
 
+class Designe(Widget):
+	pass
 
 class TransportApp(App):
 	def build(self):
-		titre = Label(	text=strftime("%H:%M", localtime),
-					markup= True,
-					font_size= 50,
-					pos_hint={'x': 0, 'center_y': 0.9})
-		return Widgets()
-
-
-
-
+		root = FloatLayout()
+		graph = Designe()
+		time = Timer()
+		Clock.schedule_interval(time.update, 1)
+		root.add_widget(graph)
+		root.add_widget(time)
+		return root
 
 if __name__ == '__main__':
 	TransportApp().run()
