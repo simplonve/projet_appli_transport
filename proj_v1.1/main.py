@@ -4,6 +4,7 @@
 import kivy
 kivy.require('1.9.0')
 
+from time import localtime, strftime
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.uix.widget import Widget
@@ -23,6 +24,10 @@ class Widgets(Widget):
 
 class TransportApp(App):
 	def build(self):
+		titre = Label(	text=strftime("%H:%M", localtime),
+					markup= True,
+					font_size= 50,
+					pos_hint={'x': 0, 'center_y': 0.9})
 		return Widgets()
 
 
@@ -31,3 +36,4 @@ class TransportApp(App):
 
 if __name__ == '__main__':
 	TransportApp().run()
+
