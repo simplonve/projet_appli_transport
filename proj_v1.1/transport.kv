@@ -24,7 +24,7 @@
 	Label:
 		text:'Ligne n° :'
 		font_size: 25
-		center_x: root.width * 3 / 5
+		center_x: root.width * 2.75 / 5
 		top: root.top * 3 / 4
 		color: 1,0,0,1
 
@@ -49,14 +49,12 @@
 		top: root.top * 2.75 / 5
 		color: 1,0,0,1
 
-	FloatLayout:
-
-		Button:
-			text:'Nouvelle\nRecherche'
-			font_size: 30
-			center_x: root.width * 9 / 10
-			top: root.height * 4.80 / 5
-			color: 1,1,1,1
-			size_hint_x: None
-			width: root.width / 6
-			height: root.height / 6
+	Button:
+		text:'Nouvelle\nRecherche'
+		font_size: 30
+		width: root.width / 6
+		height: root.height / 6
+		center_x: root.width / 2
+		top: root.height / 5
+		color: 1,1,1,1
+		size_hint_x: None
