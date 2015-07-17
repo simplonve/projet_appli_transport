@@ -16,34 +16,31 @@ from kivy.properties import NumericProperty, ReferenceListProperty,\
 	ObjectProperty, ListProperty, StringProperty
 
 Window.size=(720, 1280)
-
-class FondEcran(FloatLayout):
-	def __init__(self, **kwargs):
-		super(FondEcran, self).__init__(**kwargs)
+Window.clearcolor = (.5, .5, .5, 1)
 
 
 class accueil(Widget):
 	def position(self):
 		return
 
+class Titre(Label):
+	pass
+
 class ClassiqueApp(App):
 
 	def build(self):
 		parent = FloatLayout()
-		titre = Label(	text='[color=ff3333]Bienvenue[/color]',
-						markup= True,
-						font_size= 50,
-						Color= (1, 0, 0),
-						pos_hint={'x': 0, 'center_y': 0.9})
+		titre = Label(	text='[color=2ecc71]Bienvenue[/color]',
+					markup= True,
+					font_size= 50,
+					pos_hint={'x': 0, 'center_y': 0.9})
 		depart = Label(	text='[color=2ecc71]Départ[/color]',
 						markup= True,
 						font_size= 20,
-						Color= (1, 0, 0),
 						pos_hint={'x': -0.25, 'center_y': 0.55})
 		arrive = Label(	text='[color=2ecc71]Arrivée[/color]',
 						markup= True,
 						font_size= 20,
-						Color= (1, 0, 0),
 						pos_hint={'x': 0.25, 'center_y': 0.55})
 		self.champs1 = TextInput(	multiline=True,
 									size_hint=(.3, .04),
@@ -61,6 +58,9 @@ class ClassiqueApp(App):
 						markup= True,
 						size_hint=(.2,.1),
 						pos_hint={'x': 0.6, 'center_y': .1})
+
+		t = Titre()
+		parent.add_widget(t)
 		parent.add_widget(titre)
 		parent.add_widget(depart)
 		parent.add_widget(arrive)

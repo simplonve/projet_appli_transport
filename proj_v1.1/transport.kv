@@ -1,0 +1,61 @@
+#:kivy 1.9.0
+
+<Widgets>:
+	canvas.before:
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: 'Images/background.png'
+	Label:
+		font_size: 20
+		center_x: root.width / 2
+		top: root.top
+		text:'Heure Actuelle :'
+		color: 1,0,0,1
+
+	Label:
+		text:'Vous êtes :'
+		font_size: 15
+		center_x: root.width / 5
+		top: root.top * 3 / 4
+		color: 1,0,0,1
+
+	Label:
+		text:'Ligne n° :'
+		font_size: 15
+		center_x: root.width * 3 / 5
+		top: root.top * 3 / 4
+		color: 1,0,0,1
+
+	Label:
+		text:'Sens :'
+		font_size: 15
+		center_x: root.width * 2.93 / 5
+		top: root.top * 3.5 / 5
+		color: 1,0,0,1
+
+	Label:
+		text:'Horaires Départs :'
+		font_size: 15
+		center_x: root.width * 1.15 / 5
+		top: root.top * 2.75 / 5
+		color: 1,0,0,1
+
+	Label:
+		text:'Horaires Arrivées :'
+		font_size: 15
+		center_x: root.width * 3.2 / 5
+		top: root.top * 2.75 / 5
+		color: 1,0,0,1
+
+
+
+	Button:
+		text:'Nouvelle\nRecherche'
+		font_size: 15
+		center_x: root.width * 9 / 10
+		top: root.height * 4.80 / 5
+		color: 1,1,1,1
+		size_hint_x: None
+		width: '80pt'
+		height: '40pt'
