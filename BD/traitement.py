@@ -31,7 +31,7 @@ def supp_inutile(tableau):
             index_to_pop.append(i)
 
     for row in tableau:
-        if first == True:
+        if first == True or len(row) == 8:
             first = False
             continue
         for to_pop in index_to_pop:
@@ -51,14 +51,9 @@ scol = [fichier[0]] + fichier[3:]
 vac_ete = [fichier[1]] + fichier[3:]
 autre_vac = [fichier[2]] + fichier[3:]
 
-
-'''ne supprime rien dans scol = normal
-probleme de ce soir : si on les lance un par un
-marche niquel
-si on lance les trois (ou les deux sans scol)
-met pop index out of range car cet abruti
-repasse sur la premiere ligne du tableau (qu'il a déjà traiter)
-'''
 scol = supp_inutile(scol)
 autre_vac = supp_inutile(autre_vac)
 vac_ete = supp_inutile(vac_ete)
+
+'''tableaux finaux : scol, autre_vac et vac_ete
+poser dans Le_Cheylard....py'''
