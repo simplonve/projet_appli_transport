@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 def lecture_fichier(path):
-    '''lit un csv et le renvoi sous forme de tableau.
+    '''lit un csv ou un txt et le renvoi sous forme de tableau.
     decommentez ligne 20-21 pour un visuel
     dans le terminal'''
     with open(path, 'r') as fichier:
@@ -39,7 +39,8 @@ def supp_inutile(tableau):
 
     return tableau
 
-path = 'Le Cheylard - St Sauveur.csv'
+'''chemin du fichier'''
+path = 'st sauveur le cheylard.txt'
 
 fichier = lecture_fichier(path)
 
@@ -55,5 +56,8 @@ scol = supp_inutile(scol)
 autre_vac = supp_inutile(autre_vac)
 vac_ete = supp_inutile(vac_ete)
 
-'''tableaux finaux : scol, autre_vac et vac_ete
-poser dans Le_Cheylard....py'''
+'''inscrit les tableaux dans lignes.py'''
+with open('lignes.py', 'a') as bd:
+    bd.write('scol = '+str(scol)+'\n')
+    bd.write('vac_ete = '+str(vac_ete)+'\n')
+    bd.write('autre_vac = '+str(autre_vac)+'\n')
