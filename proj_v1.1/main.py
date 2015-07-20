@@ -96,7 +96,7 @@ class Timer(Label):
         self.text = strftime("%H:%M:%S", localtime())
 
 class Designe(Widget):
-	pass
+    pass
 
 class TransportApp(App):
 	def build(self):
