@@ -1,6 +1,5 @@
-#! /usr/bin/env python3
-# -*- coding: utf-8 -*-
-
+#! /usr/bin/python
+# -*- coding:utf-8 -*-
 '''pour se servir de ce fichier :
 
 import lignes

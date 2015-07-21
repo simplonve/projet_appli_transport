@@ -45,7 +45,7 @@ def suppr_inutile(tableau):
 
 def main():
     '''chemin du fichier a traiter'''
-    path = 'Valence le cheylard.txt'
+    path = 'sources/Valence le cheylard.txt'
 
 
     '''Création de trois tableaux
@@ -74,11 +74,11 @@ def main():
     path.pop(len(path)-1)
     path = '_'.join(path)
 
-    '''inscrit les tableaux dans lignes.py
+    '''inscrit les tableaux dans Base_de_donnees.py
     path fichier + = [ + les trois tableau + ]
     avec un saut de ligne après chaque tableaux
     '''
-    with open('lignes.py', 'a') as bd:
+    with open('Base_de_donnees.py', 'a') as bd:
         bd.write(path+' = [\n'+str(scol)+',\n'+str(autre_vac)+',\n'+str(vac_ete)+']\n')
 
 if __name__ == '__main__':
