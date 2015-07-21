@@ -25,8 +25,6 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import NumericProperty, ReferenceListProperty,\
 	ObjectProperty, ListProperty, StringProperty
 
-# Window.size = (1280, 700)
-# ville_aller = requete.recup_list_ville()
 
 class Ville(DropDown):
     for i in range(40):
@@ -44,7 +42,7 @@ class SelectionArretDepart(Screen):
         self.drop_down = Ville()
 
         dropdown = DropDown()
-        villes = requete.recup_list_ville()
+        villes = requete.recup_list_ville_kivy()
         for ville in villes:
             btn = Button(text='%r' % ville, size_hint_y=None, height=30)
             btn.bind(on_release=lambda btn: dropdown.select(btn.text))
@@ -70,7 +68,7 @@ class SelectionArretArrive(Screen):
         self.drop_down = Ville()
 
         dropdown = DropDown()
-        villes = requete.recup_list_ville()
+        villes = requete.recup_list_ville_kivy()
         for ville in villes:
             btn = Button(text='%r' % ville, size_hint_y=None, height=30)
             btn.bind(on_release=lambda btn: dropdown.select(btn.text))
@@ -98,56 +96,12 @@ class TransportApp(App):
         time = Timer()
         arretd = SelectionArretDepart()
         arreta = SelectionArretArrive()
-        # depart = Depart()
-        # arrive = Arrivee()
         Clock.schedule_interval(time.update, 1)
         root.add_widget(graph)
         root.add_widget(time)
         root.add_widget(arretd)
         root.add_widget(arreta)
-        # root.add_widget(depart)
-        # root.add_widget(arrive)
         return root
 
 if __name__ == '__main__':
     TransportApp().run()
-
-# class Depart(FloatLayout):
-#     def __init__(self, **kwargs):
-
-#         super(Depart, self).__init__(**kwargs)
-#         self.dropdown = Ville()
-#         self.mainbutton = Button(	text='Selectionner votre ville de départ :',
-# 							size_hint=(.7,.1),
-# 							pos_hint={'x': .15, 'center_y': .6})
-
-#         self.add_widget(self.mainbutton)
-
-#         self.mainbutton.bind(on_release=self.dropdown.open)
-
-#         self.dropdown.bind(on_select=lambda\
-#                    instance, x: setattr(self.mainbutton, 'text', x))
-#         self.dropdown.bind(on_select=self.callback)
-
-#     def callback(self, instance, x):
-#         '''x est self.mainbutton.text actualisé'''
-
-# class Arrivee(FloatLayout):
-#     def __init__(self, **kwargs):
-
-#         super(Arrivee, self).__init__(**kwargs)
-#         self.dropdown = Ville()
-#         self.mainbutton = Button(	text="Selectionner votre ville d'arrivée :",
-# 							size_hint=(.7,.1),
-# 							pos_hint={'x': .15, 'center_y': .4})
-
-#         self.add_widget(self.mainbutton)
-
-#         self.mainbutton.bind(on_release=self.dropdown.open)
-
-#         self.dropdown.bind(on_select=lambda\
-#                    instance, x: setattr(self.mainbutton, 'text', x))
-#         self.dropdown.bind(on_select=self.callback)
-
-#     def callback(self, instance, x):
-#         '''x est self.mainbutton.text actualisé'''

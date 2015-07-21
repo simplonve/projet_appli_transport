@@ -26,44 +26,47 @@ def lecture_fichier(path):
 
 def suppr_inutile(tableau):
     '''supprimer les colonnes inutile (contenant ND(non désservi))'''
-    index_a_supprimer = []
-    first = True
-    for element in tableau[0]:
-        if element == 'ND':
-            index_a_supprimer.append(tableau[0].index('ND'))
-            tableau[0].pop(tableau[0].index('ND'))
-    for row in tableau:
-        print(row)
-        if first == True:
-            first = False
-            continue
-        for index in index_a_supprimer:
-            row.pop(index)
-        print('----------------------------------------')
-        print(row)
-        print('++++++++++++++++++++++++++++++++++++++++')
-    print('fin du traitement de '+tableau[0][0])
+    index = None
+    IsND = True
+    while IsND:
+        if 'ND' not in tableau[0]:
+            IsND = False
+            break
+        for row in tableau:
+            if len(row) == len(tableau[0]) and len(row) <= 8:
+                break
+            if row == tableau[0] and 'ND' in row:
+                index = tableau[0].index('ND')
+                tableau[0].pop(index)
+            else:
+               row.pop(index)
+
     return tableau
 
 def main():
     '''chemin du fichier a traiter'''
-    path = 'Le Cheylard Valence.csv'
+    path = 'Valence le cheylard.txt'
 
-    fichier = lecture_fichier(path)
 
     '''Création de trois tableaux
     pour chaque "catégories"
     scol = periode scolaire
     ...'''
-    scol = [fichier[0]] + fichier[3:]
-    vac_ete = [fichier[1]] + fichier[3:]
-    autre_vac = [fichier[2]] + fichier[3:]
+    fichier = lecture_fichier(path)
 
+    scol = [fichier[0]] + fichier[3:]
     scol = suppr_inutile(scol)
+
+    fichier = lecture_fichier(path)
+
+    autre_vac = [fichier[2]] + fichier[3:]
     autre_vac = suppr_inutile(autre_vac)
-    for row in vac_ete:
-        print(row)
-    #vac_ete = suppr_inutile(vac_ete)
+
+    fichier = lecture_fichier(path)
+
+    vac_ete = [fichier[1]] + fichier[3:]
+    vac_ete = suppr_inutile(vac_ete)
+
 
     '''decoupe du chemin du fichier pour enlever espace et extension'''
     path = path.split(' ')

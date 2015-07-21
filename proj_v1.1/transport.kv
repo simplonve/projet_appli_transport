@@ -1,4 +1,5 @@
 #:kivy 1.9.0
+# -*- coding: utf-8 -*-
 
 <Designe>:
 	canvas.before:
@@ -24,58 +25,6 @@
 	top: root.height / 1.6
 	color: 1,0,0,1
 
-# <Ville>:
-#     Button:
-#         text: 'Le Cheylard'
-#         size_hint_y: None
-#         height: 44
-#         on_release: root.select('Le Cheylard')
-#     Button:
-#         text: "Saint Michel D'Aurance"
-#         size_hint_y: None
-#         height: 44
-#         on_release: root.select("Saint Michel D'Aurance")
-#     Button:
-#         text: "Saint Barthelemy Le Meil"
-#         size_hint_y: None
-#         height: 44
-#         on_release: root.select("Saint Barthelemy Le Meil")
-#     Button:
-#         text: 'Saint Sauveur de Montagus'
-#         size_hint_y: None
-#         height: 44
-#         on_release: root.select('Saint Sauveur de Montagus')
-#     Button:
-#         text: 'Les ollières'
-#         size_hint_y: None
-#         height: 44
-#         on_release: root.select('Les ollières')
-#     Button:
-#         text: 'Dunière Sur Eyrieux'
-#         size_hint_y: None
-#         height: 44
-#         on_release: root.select('Dunière Sur Eyrieux')
-#     Button:
-#         text: 'Saint Fortunat'
-#         size_hint_y: None
-#         height: 44
-#         on_release: root.select('Saint Fortunat')
-#     Button:
-#         text: 'Beauchastel'
-#         size_hint_y: None
-#         height: 44
-#         on_release: root.select('Beauchastel')
-#     Button:
-#         text: 'Valence - Ville'
-#         size_hint_y: None
-#         height: 44
-#         on_release: root.select('Valence - Ville')
-# 	Button:
-#         text: 'Valence - TGV'
-#         size_hint_y: None
-#         height: 44
-#         on_release: root.select('Valence - TGV')
-
 <SelectionArretDepart>:
     id: home_screen
     top_layout: topLayoutID
@@ -87,8 +36,8 @@
     BoxLayout:
         id: topLayoutID
         #cols: 2
-        size_hint: 1, .05
-        pos_hint: {'x': 0, 'y': .95}
+        size_hint: .5, .05
+        pos_hint: {'x': .25, 'y': .75}
 
 <SelectionArretArrive>:
     id: home_screen
@@ -101,5 +50,5 @@
     BoxLayout:
         id: topLayoutID
         #cols: 2
-        size_hint: 1, .05
-        pos_hint: {'x': 0, 'y': .5}
+        size_hint: .5, .05
+        pos_hint: {'x': .25, 'y': .5}
