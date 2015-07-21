@@ -22,14 +22,14 @@ aujourdhui = 'L' ou 'M' ou 'm' ou 'J' ou 'V' ou 'S' ou 'D'
 ville_depart = 'LE CHEYLARD'
 ville_arriver = 'CHARMES'
 
-L'heure doit être sous cette forme : [10, 45]
+L'heure doit être sous cette forme : 1045
 
 Pour arriver à ceci :
 
 ################################################################
 heure = strftime("%H:%M", localtime())
 heure = heure.split(':')
-heure[0], heure[1] = int(heure[0]), int(heure[1])
+heure = int(str(heure[0])+str(heure[1]))
 ################################################################
 '''
 
@@ -120,7 +120,7 @@ def select_depart_arriver(fiche_horaire, index_jour, ville_depart, ville_arriver
 def select_depart(tableau, heure):
     '''renvoi la ville, l'arret et les horaire en fonction de l'heure
     ainsi que les index de la selection'''
-    heure = [9, 30]#seulement pour les test !
+    heure = 930#seulement pour les test !
     index_retour = []
     tab_retour = []
     for row in tableau:
@@ -129,8 +129,8 @@ def select_depart(tableau, heure):
             if element != tableau[0] or element != tableau[1]:
                 try:
                     decoupe = element.split(':')
-                    decoupe = int(decoupe[0])
-                    if decoupe > heure[0]:
+                    decoupe = int(str(decoupe[0])+str(decoupe[1]))
+                    if decoupe > heure:
                         tab_selection.append(element)
                         index_retour.append(row.index(element))
                 except:
@@ -174,8 +174,7 @@ def main():
 
     heure = strftime("%H:%M", localtime())
     heure = heure.split(':')
-    heure[0], heure[1] = int(heure[0]), int(heure[1])
-
+    heure = int(str(heure[0])+str(heure[1]))
     depart, arriver = select(periode, aujourdhui, ville_depart, ville_arriver, heure)
 
     for row in depart:
