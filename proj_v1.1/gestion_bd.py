@@ -13,7 +13,7 @@ depart, arriver = gestion_bd.select(periode, aujourdhui, ville_depart, ville_arr
 ################################################################
 
 depart et arriver seront ensuite des tableau sous cette forme :
-['LE CHEYLARD', 'Av.Saunier/GrpeScol.', '11:45', '17:05']
+['VILLE', 'ARRET', 'HORAIRE 1', 'HORAIRE 2', '...']
 
 Les valeur données au select sont sous cette forme :
 
@@ -22,15 +22,8 @@ aujourdhui = 'L' ou 'M' ou 'm' ou 'J' ou 'V' ou 'S' ou 'D'
 ville_depart = 'LE CHEYLARD'
 ville_arriver = 'CHARMES'
 
-L'heure doit être sous cette forme : 1045
-
-Pour arriver à ceci :
-
-################################################################
-heure = strftime("%H:%M", localtime())
-heure = heure.split(':')
-heure = int(str(heure[0])+str(heure[1]))
-################################################################
+Pour utiliser l'heure actuelle, décommentez les ligne 201-203
+et commentez la ligne 204
 '''
 
 from Base_de_donnees import *
@@ -120,6 +113,7 @@ def insert():
         bd.write(path+' = [\n'+str(scol)+',\n'+str(autre_vac)+',\n'+str(vac_ete)+']\n')
 
 ###############################################################
+
 def select_ville():
     '''recupère la liste des villes et la renvoi sous forme de tableau'''
     ville_aller = []
@@ -201,9 +195,12 @@ def select_depart_arriver(fiche_horaire, index_jour, ville_depart, ville_arriver
             depart.append(buffer_depart)
     return depart, arriver
 
-def select_depart(tableau, heure):
+def select_depart(tableau):
     '''renvoi la ville, l'arret et les horaire en fonction de l'heure
     ainsi que les index de la selection'''
+    #heure = strftime("%H:%M", localtime())
+    #heure = heure.split(':')
+    #heure = int(str(heure[0])+str(heure[1]))
     heure = 930#seulement pour les test !
     index_retour = []
     tab_retour = []
@@ -237,7 +234,7 @@ def select_arriver(tableau, index):
         tab_retour.append(tab_selection)
     return tab_retour
 
-def select(periode, aujourdhui, ville_depart, ville_arriver, heure):
+def select(periode, aujourdhui, ville_depart, ville_arriver):
     ville_aller, ville_retour = recup_list_ville()
     fiche_horaire = select_sens(ville_depart, ville_aller, ville_arriver)
     fiche_horaire = select_periode(fiche_horaire, periode)
@@ -245,7 +242,7 @@ def select(periode, aujourdhui, ville_depart, ville_arriver, heure):
     depart, arriver = select_depart_arriver(fiche_horaire, index_jour, ville_depart, ville_arriver)
 
     depart = depart[1:] #seulement pour la fiche horaire FH012
-    depart, index_selection = select_depart(depart, heure)
+    depart, index_selection = select_depart(depart)
     arriver = select_arriver(arriver, index_selection)
     return depart, arriver
 
@@ -256,10 +253,7 @@ def main():
     ville_depart = 'LE CHEYLARD'
     ville_arriver = 'CHARMES'
 
-    heure = strftime("%H:%M", localtime())
-    heure = heure.split(':')
-    heure = int(str(heure[0])+str(heure[1]))
-    depart, arriver = select(periode, aujourdhui, ville_depart, ville_arriver, heure)
+    depart, arriver = select(periode, aujourdhui, ville_depart, ville_arriver)
 
     for row in depart:
         print(row)
