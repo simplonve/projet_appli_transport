@@ -76,11 +76,10 @@ def suppr_inutile(tableau):
 
 def insert():
     '''chemin du fichier a traiter'''
-
-    paths = []
     dossier = os.listdir('sources')
 
     for i in range(len(dossier)):
+        paths = []
         path_dossier = 'sources/' + dossier[i]
         fichier = os.listdir(path_dossier)
         for j in range(len(fichier)):
@@ -119,7 +118,7 @@ def insert():
             with open('BDD.py', 'a') as bd:
                 bd.write(fichier[0][2]+' = [\n'+str(scol)+',\n'+str(autre_vac)+',\n'+str(vac_ete)+']\n')
         with open('BDD.py', 'a') as bd:
-            ligne = "ligne = {'"+dico_bd[1]+"' : {'aller' : "+dico_bd[2]+", 'retour' : "+dico_bd[3]+"}}"
+            ligne = "ligne = {'"+dico_bd[1]+"' : {'aller' : "+dico_bd[2]+", 'retour' : "+dico_bd[3]+"}}\n\n"
             bd.write(ligne)
         dico_bd = []
 
