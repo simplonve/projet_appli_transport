@@ -24,7 +24,8 @@ Pour utiliser l'heure actuelle, dans select_depart(),
 décommentez les lignes commentées et commentez la ligne de test
 '''
 
-from Base_de_donnees import *
+import os
+import BDD as bd
 from time import localtime, strftime
 from datetime import datetime
 
@@ -75,43 +76,55 @@ def suppr_inutile(tableau):
 
 def insert():
     '''chemin du fichier a traiter'''
-    path = input('nom du fichier a inserer')
-    path = 'sources/'+path
 
-    '''Création de trois tableaux
-    pour chaque "catégories"
-    scol = periode scolaire
-    ...'''
-    fichier = lecture_fichier(path)
+    paths = []
+    dossier = os.listdir('sources')
 
-    scol = [fichier[0]] + fichier[3:]
-    scol = suppr_inutile(scol)
+    for i in range(len(dossier)):
+        path_dossier = 'sources/' + dossier[i]
+        fichier = os.listdir(path_dossier)
+        for j in range(len(fichier)):
+            path_fichier = path_dossier + '/' + fichier[j]
+            paths.append(path_fichier)
 
-    fichier = lecture_fichier(path)
+        dico_bd = []
+        for path in paths:
+            '''Création de trois tableaux
+            pour chaque "catégories"
+            scol = periode scolaire
+            ...'''
+            fichier = lecture_fichier(path)
 
-    autre_vac = [fichier[2]] + fichier[3:]
-    autre_vac = suppr_inutile(autre_vac)
+            scol = [fichier[1]] + fichier[4:]
+            scol = suppr_inutile(scol)
 
-    fichier = lecture_fichier(path)
+            fichier = lecture_fichier(path)
 
-    vac_ete = [fichier[1]] + fichier[3:]
-    vac_ete = suppr_inutile(vac_ete)
+            vac_ete = [fichier[2]] + fichier[4:]
+            vac_ete = suppr_inutile(vac_ete)
 
+            fichier = lecture_fichier(path)
 
-    '''decoupe du chemin du fichier pour enlever espace et extension'''
-    path = path.split(' ')
-    path = path[:len(path)-1]+path[len(path)-1].split('.')
-    path.pop(len(path)-1)
-    path = '_'.join(path)
+            autre_vac = [fichier[3]] + fichier[4:]
+            autre_vac = suppr_inutile(autre_vac)
 
-    '''inscrit les tableaux dans Base_de_donnees.py
-    path fichier + = [ + les trois tableau + ]
-    avec un saut de ligne après chaque tableaux
-    '''
-    with open('Base_de_donnees.py', 'a') as bd:
-        bd.write(path+' = [\n'+str(scol)+',\n'+str(autre_vac)+',\n'+str(vac_ete)+']\n')
+            if dico_bd == []:
+                dico_bd.append(fichier[0][0])
+                dico_bd.append(fichier[0][1])
+                dico_bd.append(fichier[0][2])
+            else:
+                dico_bd.append(fichier[0][2])
+
+            '''inscrit les tableaux dans une var'''
+            with open('BDD.py', 'a') as bd:
+                bd.write(fichier[0][2]+' = [\n'+str(scol)+',\n'+str(autre_vac)+',\n'+str(vac_ete)+']\n')
+        with open('BDD.py', 'a') as bd:
+            ligne = "ligne = {'"+dico_bd[1]+"' : {'aller' : "+dico_bd[2]+", 'retour' : "+dico_bd[3]+"}}"
+            bd.write(ligne)
+        dico_bd = []
 
 ###############################################################
+
 '''section "calendrier" '''
 
 def numjouran(date):
@@ -221,18 +234,18 @@ def select_fiche(fiche_horaire):
 def select_ville():
     '''recupère la liste des villes et la renvoi sous forme de tableau'''
     ville_aller = []
-    ville_retour = []
 
-    for i in range(len(Le_Cheylard_Valence[0])):
-        if Le_Cheylard_Valence[0][i][0] not in ville_aller:
-            ville_aller.append(Le_Cheylard_Valence[0][i][0]+' - '+Le_Cheylard_Valence[0][i][1])
-
-    for i in range(len(Valence_le_cheylard[0])):
-        if Valence_le_cheylard[0][i][0] not in ville_retour:
-            ville_retour.append(Valence_le_cheylard[0][i][0]+' - '+Valence_le_cheylard[0][i][1])
+    for ligne in bd.lignes:
+        print('ligne : ' + ligne)
+        for sens in bd.lignes[ligne]:
+            print('sens : ' + sens)
+            if sens == 'aller':
+                for row in bd.lignes[ligne][sens]:
+                    for i in range(len(row)):
+                        if row[i][0] not in ville_aller:
+                            ville_aller.append(row[i][0])
 
     ville_aller.pop(0)
-    ville_retour.pop(0)
     return ville_aller
 
 def select_list_ville():
@@ -240,25 +253,30 @@ def select_list_ville():
     ville_aller = []
     ville_retour = []
 
-    for i in range(len(Le_Cheylard_Valence[0])):
-        if Le_Cheylard_Valence[0][i][0] not in ville_aller:
-            ville_aller.append(Le_Cheylard_Valence[0][i][0])
-
-    for i in range(len(Valence_le_cheylard[0])):
-        if Valence_le_cheylard[0][i][0] not in ville_retour:
-            ville_retour.append(Valence_le_cheylard[0][i][0])
+    for ligne in bd.lignes:
+        for sens in bd.lignes[ligne]:
+            if sens == 'aller':
+                for row in bd.lignes[ligne][sens]:
+                    for i in range(len(row)):
+                        if row[i][0] not in ville_aller:
+                            ville_aller.append(row[i][0])
+            else:
+                for row in bd.lignes[ligne][sens]:
+                    for i in range(len(row)):
+                        if row[i][0] not in ville_retour:
+                            ville_retour.append(row[i][0])
 
     ville_aller.pop(0)
     ville_retour.pop(0)
-    return ville_aller, ville_retour
+    return ville_aller, ville_retour, ligne
 
-def select_sens(ville_depart, ville_aller, ville_arriver):
+def select_sens(ville_depart, ville_aller, ville_arriver, ligne):
     '''recup le sens voulu grace a la position des ville dans la liste'''
     if ville_depart in ville_aller and ville_arriver in ville_aller:
         if ville_aller.index(ville_depart) < ville_aller.index(ville_arriver):
-            fiche_horaire = Le_Cheylard_Valence
+            fiche_horaire = bd.lignes[ligne]['aller']
         else:
-            fiche_horaire = Valence_le_cheylard
+            fiche_horaire = bd.lignes[ligne]['retour']
     return fiche_horaire
 
 def select_jour(fiche_horaire):
@@ -335,8 +353,8 @@ def select_arriver(tableau, index):
     return tab_retour
 
 def select(ville_depart, ville_arriver):
-    ville_aller, ville_retour = select_list_ville()
-    fiche_horaire = select_sens(ville_depart, ville_aller, ville_arriver)
+    ville_aller, ville_retour, ligne = select_list_ville()
+    fiche_horaire = select_sens(ville_depart, ville_aller, ville_arriver, ligne)
     fiche_horaire = select_fiche(fiche_horaire)
     index_jour = select_jour(fiche_horaire)
 
@@ -361,4 +379,9 @@ def main():
         print(row)
 
 if __name__ == '__main__':
-    main()
+    print('1-select 2-insert')
+    choix = input()
+    if choix == '1':
+        main()
+    elif choix == '2':
+        insert()
