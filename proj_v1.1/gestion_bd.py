@@ -20,8 +20,8 @@ Les valeur données au select sont sous cette forme :
 ville_depart = 'LE CHEYLARD'
 ville_arriver = 'CHARMES'
 
-Pour utiliser l'heure actuelle, décommentez les ligne 263-265
-et commentez la ligne 266
+Pour utiliser l'heure actuelle, dans select_depart(),
+décommentez les lignes commentées et commentez la ligne de test
 '''
 
 from Base_de_donnees import *
@@ -142,6 +142,81 @@ def joursem():
     return ('Lundi', 'Mardi', 'mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche')[numjoursem(date)-1]
 
 ###############################################################
+'''section periode'''
+
+def date_anterieur(premiere_date,seconde_date):
+    """date_posterieur(D1,D2): dit si une date D2 'j/m/a' est postérieure ou égale à une autre date D1 'j/m/a'"""
+    premiere_date = premiere_date.split('/')
+    seconde_date = seconde_date.split('/')
+    if premiere_date == seconde_date:
+        return 'identique'
+    else:
+        if int(seconde_date[2]) > int(premiere_date[2]):
+            return True
+        elif int(seconde_date[2]) == int(premiere_date[2]):
+            if int(seconde_date[1]) > int(premiere_date[1]):
+                return True
+            elif int(seconde_date[1]) == int(premiere_date[1]):
+                if int(seconde_date[0]) >= int(premiere_date[0]):
+                    return True
+        return False
+
+def date_posterieur(premiere_date,seconde_date):
+    """date_posterieur(D1,D2): dit si une date D2 'j/m/a' est postérieure ou égale à une autre date D1 'j/m/a'"""
+    premiere_date = premiere_date.split('/')
+    seconde_date = seconde_date.split('/')
+    if premiere_date == seconde_date:
+        return 'identique'
+    else:
+        if int(seconde_date[2]) < int(premiere_date[2]):
+            return True
+        elif int(seconde_date[2]) == int(premiere_date[2]):
+            if int(seconde_date[1]) < int(premiere_date[1]):
+                return True
+            elif int(seconde_date[1]) == int(premiere_date[1]):
+                if int(seconde_date[0]) <= int(premiere_date[0]):
+                    return True
+        return False
+
+def select_periode(date):
+    vacances = {
+    'vac_ete' : ['5/07/2015', '1/09/2015'],
+    'toussaint' : ['17/10/2015', '2/11/2015'],
+    'noel' : ['19/12/2015', '4/01/2016'],
+    'hiver' : ['13/02/2016', '29/02/2016'],
+    'printemps' : ['9/04/2016', '25/04/2016']
+    }
+    for vacance in vacances:
+        posterieur = date_posterieur(date,vacances[vacance][0])
+        anterieur = date_anterieur(date,vacances[vacance][1])
+
+        if posterieur == True and anterieur == True:
+            if vacance == 'vac_ete':
+                return 'vac_ete'
+            else:
+                return 'autres_vac'
+        elif posterieur == False or anterieur == False:
+            retour = 'scol'
+    return retour
+
+def select_fiche(fiche_horaire):
+    '''recup la fiche horaire pour la periode voulue'''
+    date = datetime.now()
+    if len(str(date.month)) == 1:
+        mois = '0' + str(date.month)
+    else:
+        mois = str(date.month)
+    date = str(date.day)+'/'+str(mois)+'/'+str(date.year)
+
+    periode = select_periode(date)
+
+    for i in range(3):
+        if fiche_horaire[i][0][0] == periode:
+            fiche_horaire = fiche_horaire[i]
+
+    return fiche_horaire
+
+###############################################################
 
 def select_ville():
     '''recupère la liste des villes et la renvoi sous forme de tableau'''
@@ -186,43 +261,6 @@ def select_sens(ville_depart, ville_aller, ville_arriver):
             fiche_horaire = Valence_le_cheylard
     return fiche_horaire
 
-def select_periode(fiche_horaire):
-    '''recup la fiche horaire pour la periode voulue'''
-    date = datetime.now()
-    vac_ete = 5
-    if date.month == 7 and date.day > vac_ete:
-        periode = 'vac_ete'
-    elif date.month == 8:
-        periode = 'vac_ete'
-    elif date.month == 10 and date.day >= 17:
-        periode = 'autres_vac'
-    elif date.month == 11 and date.day <= 2:
-        periode = 'autres_vac'
-
-    elif date.month == 12 and date.day >= 19:
-        periode = 'autres_vac'
-    elif date.month == 1 and date.day <= 4:
-        periode = 'autres_vac'
-
-    elif date.month == 2 and date.day >= 13:
-        periode = 'autres_vac'
-    elif date.month == 2 and date.day <= 29:
-        periode = 'autres_vac'
-
-    elif date.month == 4 and date.day >= 9:
-        periode = 'autres_vac'
-    elif date.month == 4 and date.day <= 25:
-        periode = 'autres_vac'
-
-    else :
-        periode = 'scol'
-
-    for i in range(3):
-        if fiche_horaire[i][0][0] == periode:
-            fiche_horaire = fiche_horaire[i]
-
-    return fiche_horaire
-
 def select_jour(fiche_horaire):
     '''recup l'index des colonnes voulue (jour) pour selectionner les bons horaires'''
     index_jour = []
@@ -235,7 +273,6 @@ def select_jour(fiche_horaire):
     index_jour.append(1)
     index_jour.append(0)
     index_jour.reverse()
-    print(index_jour)
     return index_jour
 
 def select_depart_arriver(fiche_horaire, index_jour, ville_depart, ville_arriver):
@@ -263,7 +300,7 @@ def select_depart(tableau):
     #heure = strftime("%H:%M", localtime())
     #heure = heure.split(':')
     #heure = int(str(heure[0])+str(heure[1]))
-    heure = 930#seulement pour les test !
+    heure = 930 #ligne de test
     index_retour = []
     tab_retour = []
     for row in tableau:
@@ -300,7 +337,7 @@ def select_arriver(tableau, index):
 def select(ville_depart, ville_arriver):
     ville_aller, ville_retour = select_list_ville()
     fiche_horaire = select_sens(ville_depart, ville_aller, ville_arriver)
-    fiche_horaire = select_periode(fiche_horaire)
+    fiche_horaire = select_fiche(fiche_horaire)
     index_jour = select_jour(fiche_horaire)
 
     depart, arriver = select_depart_arriver(fiche_horaire, index_jour, ville_depart, ville_arriver)
