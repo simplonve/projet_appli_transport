@@ -29,6 +29,42 @@ import BDD as bd
 from time import localtime, strftime
 from datetime import datetime
 
+class Ligne(object):
+    '''principe de l'objet : une instance par ligne qu'on testera par la suite'''
+    def __init__(self, ligne):
+        self.num_ligne = ligne
+        self.ville_aller = self.init_ville_aller(self.num_ligne)
+        self.ville_retour = self.init_ville_retour(self.num_ligne)
+        self.aller = bd.lignes[ligne]['aller']
+        self.retour = bd.lignes[ligne]['retour']
+        self.ligne = bd.lignes[ligne]
+
+    def init_ville_aller(self, num_ligne):
+        ville_aller = []
+        periode = ['scol', 'vac_ete', 'autres_vac']
+
+        for sens in bd.lignes[num_ligne]:
+            if sens == 'aller':
+                for row in bd.lignes[num_ligne][sens]:
+                    for i in range(len(row)):
+                        if row[i][0] not in ville_aller and row[i][0] not in periode:
+                            ville_aller.append(row[i][0])
+
+        return ville_aller
+
+    def init_ville_retour(self, num_ligne):
+        ville_retour = []
+        periode = ['scol', 'vac_ete', 'autres_vac']
+
+        for sens in bd.lignes[num_ligne]:
+            if sens == 'retour':
+                for row in bd.lignes[num_ligne][sens]:
+                    for i in range(len(row)):
+                        if row[i][0] not in ville_retour and row[i][0] not in periode:
+                            ville_retour.append(row[i][0])
+
+        return ville_retour
+
 ###############################################################
 '''section insertion'''
 
@@ -118,7 +154,7 @@ def insert():
             with open('BDD.py', 'a') as bd:
                 bd.write(fichier[0][2]+' = [\n'+str(scol)+',\n'+str(autre_vac)+',\n'+str(vac_ete)+']\n')
         with open('BDD.py', 'a') as bd:
-            ligne = "ligne = {'"+dico_bd[1]+"' : {'aller' : "+dico_bd[2]+", 'retour' : "+dico_bd[3]+"}}\n\n"
+            ligne = "lignes = {'"+dico_bd[1]+"' : {'aller' : "+dico_bd[2]+", 'retour' : "+dico_bd[3]+"}}\n\n"
             bd.write(ligne)
         dico_bd = []
 
@@ -190,7 +226,7 @@ def date_posterieur(premiere_date,seconde_date):
                     return True
         return False
 
-def select_periode(date):
+def select_periode():
     vacances = {
     'vac_ete' : ['5/07/2015', '1/09/2015'],
     'toussaint' : ['17/10/2015', '2/11/2015'],
@@ -198,21 +234,7 @@ def select_periode(date):
     'hiver' : ['13/02/2016', '29/02/2016'],
     'printemps' : ['9/04/2016', '25/04/2016']
     }
-    for vacance in vacances:
-        posterieur = date_posterieur(date,vacances[vacance][0])
-        anterieur = date_anterieur(date,vacances[vacance][1])
 
-        if posterieur == True and anterieur == True:
-            if vacance == 'vac_ete':
-                return 'vac_ete'
-            else:
-                return 'autres_vac'
-        elif posterieur == False or anterieur == False:
-            retour = 'scol'
-    return retour
-
-def select_fiche(fiche_horaire):
-    '''recup la fiche horaire pour la periode voulue'''
     date = datetime.now()
     if len(str(date.month)) == 1:
         mois = '0' + str(date.month)
@@ -220,19 +242,27 @@ def select_fiche(fiche_horaire):
         mois = str(date.month)
     date = str(date.day)+'/'+str(mois)+'/'+str(date.year)
 
-    periode = select_periode(date)
+    for vacance in vacances:
+        posterieur = date_posterieur(date,vacances[vacance][0])
+        anterieur = date_anterieur(date,vacances[vacance][1])
 
-    for i in range(3):
-        if fiche_horaire[i][0][0] == periode:
-            fiche_horaire = fiche_horaire[i]
-
-    return fiche_horaire
+        if posterieur == True and anterieur == True:
+            if vacance == 'vac_ete':
+                retour = 2
+                break
+            else:
+                retour = 1
+                break
+        elif posterieur == False or anterieur == False:
+            retour = 0
+    return retour
 
 ###############################################################
 
 def select_ville():
     '''recupère la liste des villes et la renvoi sous forme de tableau'''
     ville_aller = []
+    periode = ['scol', 'vac_ete', 'autres_vac']
 
     for ligne in bd.lignes:
         print('ligne : ' + ligne)
@@ -241,42 +271,18 @@ def select_ville():
             if sens == 'aller':
                 for row in bd.lignes[ligne][sens]:
                     for i in range(len(row)):
-                        if row[i][0] not in ville_aller:
+                        if row[i][0] not in ville_aller and row[i][0] not in periode:
                             ville_aller.append(row[i][0])
 
-    ville_aller.pop(0)
+    ville_aller.sort()
     return ville_aller
 
-def select_list_ville():
-    '''recupère la liste des villes et la renvoi sous forme de tableau'''
-    ville_aller = []
-    ville_retour = []
-
-    for ligne in bd.lignes:
-        for sens in bd.lignes[ligne]:
-            if sens == 'aller':
-                for row in bd.lignes[ligne][sens]:
-                    for i in range(len(row)):
-                        if row[i][0] not in ville_aller:
-                            ville_aller.append(row[i][0])
-            else:
-                for row in bd.lignes[ligne][sens]:
-                    for i in range(len(row)):
-                        if row[i][0] not in ville_retour:
-                            ville_retour.append(row[i][0])
-
-    ville_aller.pop(0)
-    ville_retour.pop(0)
-    return ville_aller, ville_retour, ligne
-
-def select_sens(ville_depart, ville_aller, ville_arriver, ligne):
+def select_sens(ville_depart, ville_arriver, num_ligne, lignes):
     '''recup le sens voulu grace a la position des ville dans la liste'''
-    if ville_depart in ville_aller and ville_arriver in ville_aller:
-        if ville_aller.index(ville_depart) < ville_aller.index(ville_arriver):
-            fiche_horaire = bd.lignes[ligne]['aller']
-        else:
-            fiche_horaire = bd.lignes[ligne]['retour']
-    return fiche_horaire
+    if lignes[num_ligne].ville_aller.index(ville_depart) < lignes[num_ligne].ville_aller.index(ville_arriver):
+        return 'aller'
+    else:
+        return 'retour'
 
 def select_jour(fiche_horaire):
     '''recup l'index des colonnes voulue (jour) pour selectionner les bons horaires'''
@@ -317,7 +323,7 @@ def select_depart(tableau):
     heure = strftime("%H:%M", localtime())
     heure = heure.split(':')
     heure = int(str(heure[0])+str(heure[1]))
-    #heure = 930 #ligne de test
+    heure = 930 #pour les test
     index_retour = []
     tab_retour = []
     for row in tableau:
@@ -351,25 +357,40 @@ def select_arriver(tableau, index):
         tab_retour.append(tab_selection)
     return tab_retour
 
-def select(ville_depart, ville_arriver):
-    ville_aller, ville_retour, ligne = select_list_ville()
-    fiche_horaire = select_sens(ville_depart, ville_aller, ville_arriver, ligne)
-    fiche_horaire = select_fiche(fiche_horaire)
+def select(ville_depart, ville_arriver, lignes):
+    for ligne in lignes:
+        if ville_depart in lignes[ligne].ville_aller and ville_arriver in lignes[ligne].ville_aller:
+            num_ligne = ligne
+            break
+
+    periode = select_periode()
+    sens = select_sens(ville_depart, ville_arriver, num_ligne, lignes)
+
+    if sens == 'aller' :fiche_horaire = lignes[num_ligne].aller[periode]
+    elif sens == 'retour' :fiche_horaire = lignes[num_ligne].retour[periode]
+
     index_jour = select_jour(fiche_horaire)
 
     depart, arriver = select_depart_arriver(fiche_horaire, index_jour, ville_depart, ville_arriver)
 
-    depart = depart[1:] #seulement pour la fiche horaire FH012
+    print(num_ligne, sens)
+    if num_ligne == 12 and sens == 'aller':
+        depart = depart[1:]
     depart, index_selection = select_depart(depart)
     arriver = select_arriver(arriver, index_selection)
     return depart, arriver
 
 def main():
     '''valeur d'entrée'''
-    ville_depart = 'CHARMES'
-    ville_arriver = 'LE CHEYLARD'
+    ville_depart = 'LE CHEYLARD'
+    ville_arriver = 'CHARMES'
 
-    depart, arriver = select(ville_depart, ville_arriver)
+    '''cree un hash dans lequel seront toute les lignes'''
+    objets_lignes = {}
+    for num_ligne in bd.lignes:
+        objets_lignes[str(num_ligne)] = Ligne(num_ligne)
+
+    depart, arriver = select(ville_depart, ville_arriver, objets_lignes)
 
     for row in depart:
         print(row)
@@ -377,9 +398,12 @@ def main():
     for row in arriver:
         print(row)
 
+#PROBLEME : ne prend pas en comtpe la ligne 378
+
 if __name__ == '__main__':
-    print('1-select 2-insert')
-    choix = input()
+    #print('1-select 2-insert')
+    #choix = input()
+    choix = '1' #pour les test
     if choix == '1':
         main()
     elif choix == '2':
