@@ -297,10 +297,10 @@ def select_depart_arriver(fiche_horaire, index_jour, ville_depart, ville_arriver
 def select_depart(tableau):
     '''renvoi la ville, l'arret et les horaire en fonction de l'heure
     ainsi que les index de la selection'''
-    #heure = strftime("%H:%M", localtime())
-    #heure = heure.split(':')
-    #heure = int(str(heure[0])+str(heure[1]))
-    heure = 930 #ligne de test
+    heure = strftime("%H:%M", localtime())
+    heure = heure.split(':')
+    heure = int(str(heure[0])+str(heure[1]))
+    #heure = 930 #ligne de test
     index_retour = []
     tab_retour = []
     for row in tableau:
@@ -349,8 +349,8 @@ def select(ville_depart, ville_arriver):
 
 def main():
     '''valeur d'entrée'''
-    ville_depart = 'LE CHEYLARD'
-    ville_arriver = 'CHARMES'
+    ville_depart = 'CHARMES'
+    ville_arriver = 'LE CHEYLARD'
 
     depart, arriver = select(ville_depart, ville_arriver)
 
