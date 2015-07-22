@@ -9,7 +9,7 @@ import gestion_bd
 villes = select_ville()
 
 #selectionner les bons horaires
-depart, arriver = gestion_bd.select(aujourdhui, ville_depart, ville_arriver)
+depart, arriver = gestion_bd.select(ville_depart, ville_arriver)
 ################################################################
 
 depart et arriver seront ensuite des tableau sous cette forme :
@@ -17,12 +17,11 @@ depart et arriver seront ensuite des tableau sous cette forme :
 
 Les valeur données au select sont sous cette forme :
 
-aujourdhui = 'L' ou 'M' ou 'm' ou 'J' ou 'V' ou 'S' ou 'D'
 ville_depart = 'LE CHEYLARD'
 ville_arriver = 'CHARMES'
 
-Pour utiliser l'heure actuelle, décommentez les ligne 232-234
-et commentez la ligne 235
+Pour utiliser l'heure actuelle, décommentez les ligne 263-265
+et commentez la ligne 266
 '''
 
 from Base_de_donnees import *
@@ -113,6 +112,36 @@ def insert():
         bd.write(path+' = [\n'+str(scol)+',\n'+str(autre_vac)+',\n'+str(vac_ete)+']\n')
 
 ###############################################################
+'''section "calendrier" '''
+
+def numjouran(date):
+    """Donne le numéro du jour dans l'année de la date [j,m,a]"""
+    jour, mois, annee = date
+    jour, mois, annee = int(jour), int(mois), int(annee)
+    if ((annee % 4 == 0 and annee % 100 != 0) or annee % 400 == 0):  # bissextile?
+        return (0,31,60,91,121,152,182,213,244,274,305,335,366)[mois-1] + jour
+    else:
+        return (0,31,59,90,120,151,181,212,243,273,304,334,365)[mois-1] + jour
+
+def numjoursem(date):
+    """donne le numéro du jour de la semaine d'une date 'j/m/a'"""
+    date = date.split('/')
+    annee = int(date[2])-1
+    jour = (annee+(annee//4)-(annee//100)+(annee//400)+numjouran(date)) % 7
+    if jour == 0 :jour=7
+    return jour
+
+def joursem():
+    """donne le jour de la semaine d'une date 'j/m/a'"""
+    objet_date = datetime.now()
+    if len(str(objet_date.month)) == 1:
+        mois = '0' + str(objet_date.month)
+    else:
+        mois = str(objet_date.month)
+    date = str(objet_date.day)+'/'+mois+'/'+str(objet_date.year)
+    return ('Lundi', 'Mardi', 'mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche')[numjoursem(date)-1]
+
+###############################################################
 
 def select_ville():
     '''recupère la liste des villes et la renvoi sous forme de tableau'''
@@ -131,7 +160,7 @@ def select_ville():
     ville_retour.pop(0)
     return ville_aller
 
-def recup_list_ville():
+def select_list_ville():
     '''recupère la liste des villes et la renvoi sous forme de tableau'''
     ville_aller = []
     ville_retour = []
@@ -194,9 +223,11 @@ def select_periode(fiche_horaire):
 
     return fiche_horaire
 
-def select_jour(fiche_horaire, aujourdhui):
+def select_jour(fiche_horaire):
     '''recup l'index des colonnes voulue (jour) pour selectionner les bons horaires'''
     index_jour = []
+    aujourdhui = joursem()
+    aujourdhui = aujourdhui[0]
     for jour in fiche_horaire[0]:
         if aujourdhui in jour:
             index_jour.append(fiche_horaire[0].index(jour))
@@ -266,11 +297,11 @@ def select_arriver(tableau, index):
         tab_retour.append(tab_selection)
     return tab_retour
 
-def select(aujourdhui, ville_depart, ville_arriver):
-    ville_aller, ville_retour = recup_list_ville()
+def select(ville_depart, ville_arriver):
+    ville_aller, ville_retour = select_list_ville()
     fiche_horaire = select_sens(ville_depart, ville_aller, ville_arriver)
     fiche_horaire = select_periode(fiche_horaire)
-    index_jour = select_jour(fiche_horaire, aujourdhui)
+    index_jour = select_jour(fiche_horaire)
 
     depart, arriver = select_depart_arriver(fiche_horaire, index_jour, ville_depart, ville_arriver)
 
@@ -281,12 +312,10 @@ def select(aujourdhui, ville_depart, ville_arriver):
 
 def main():
     '''valeur d'entrée'''
-    periode = 'scol'
-    aujourdhui = 'M'
     ville_depart = 'LE CHEYLARD'
     ville_arriver = 'CHARMES'
 
-    depart, arriver = select(aujourdhui, ville_depart, ville_arriver)
+    depart, arriver = select(ville_depart, ville_arriver)
 
     for row in depart:
         print(row)
