@@ -33,37 +33,24 @@ class Ligne(object):
     '''principe de l'objet : une instance par ligne qu'on testera par la suite'''
     def __init__(self, ligne):
         self.num_ligne = ligne
-        self.ville_aller = self.init_ville_aller(self.num_ligne)
-        self.ville_retour = self.init_ville_retour(self.num_ligne)
+        self.ville_aller = self.init_ville(self.num_ligne, 'aller')
+        self.ville_retour = self.init_ville(self.num_ligne, 'retour')
         self.aller = bd.lignes[ligne]['aller']
         self.retour = bd.lignes[ligne]['retour']
         self.ligne = bd.lignes[ligne]
 
-    def init_ville_aller(self, num_ligne):
+    def init_ville(self, num_ligne, Sens):
         ville_aller = []
         periode = ['scol', 'vac_ete', 'autres_vac']
 
         for sens in bd.lignes[num_ligne]:
-            if sens == 'aller':
+            if sens == Sens:
                 for row in bd.lignes[num_ligne][sens]:
                     for i in range(len(row)):
                         if row[i][0] not in ville_aller and row[i][0] not in periode:
                             ville_aller.append(row[i][0])
 
         return ville_aller
-
-    def init_ville_retour(self, num_ligne):
-        ville_retour = []
-        periode = ['scol', 'vac_ete', 'autres_vac']
-
-        for sens in bd.lignes[num_ligne]:
-            if sens == 'retour':
-                for row in bd.lignes[num_ligne][sens]:
-                    for i in range(len(row)):
-                        if row[i][0] not in ville_retour and row[i][0] not in periode:
-                            ville_retour.append(row[i][0])
-
-        return ville_retour
 
 ###############################################################
 '''section insertion'''
@@ -373,8 +360,7 @@ def select(ville_depart, ville_arriver, lignes):
 
     depart, arriver = select_depart_arriver(fiche_horaire, index_jour, ville_depart, ville_arriver)
 
-    print(num_ligne, sens)
-    if num_ligne == 12 and sens == 'aller':
+    if num_ligne == '12' and sens == 'aller':
         depart = depart[1:]
     depart, index_selection = select_depart(depart)
     arriver = select_arriver(arriver, index_selection)
@@ -397,8 +383,6 @@ def main():
 
     for row in arriver:
         print(row)
-
-#PROBLEME : ne prend pas en comtpe la ligne 378
 
 if __name__ == '__main__':
     #print('1-select 2-insert')
