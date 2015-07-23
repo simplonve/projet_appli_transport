@@ -28,7 +28,7 @@ from kivy.properties import NumericProperty, ReferenceListProperty,\
 
 class Ville(DropDown):
     for i in range(40):
-        print i
+        print(i)
 
 class SelectionArretDepart(Screen):
     top_layout = ObjectProperty(None)

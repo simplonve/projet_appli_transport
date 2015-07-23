@@ -252,9 +252,7 @@ def select_ville():
     periode = ['scol', 'vac_ete', 'autres_vac']
 
     for ligne in bd.lignes:
-        print('ligne : ' + ligne)
         for sens in bd.lignes[ligne]:
-            print('sens : ' + sens)
             if sens == 'aller':
                 for row in bd.lignes[ligne][sens]:
                     for i in range(len(row)):
@@ -345,6 +343,7 @@ def select_arriver(tableau, index):
     return tab_retour
 
 def select(ville_depart, ville_arriver, lignes):
+
     for ligne in lignes:
         if ville_depart in lignes[ligne].ville_aller and ville_arriver in lignes[ligne].ville_aller:
             num_ligne = ligne
@@ -360,17 +359,14 @@ def select(ville_depart, ville_arriver, lignes):
 
     depart, arriver = select_depart_arriver(fiche_horaire, index_jour, ville_depart, ville_arriver)
 
-
     if num_ligne == '12' and sens == 'aller':
         depart = depart[1:]
     depart, index_selection = select_depart(depart)
     arriver = select_arriver(arriver, index_selection)
     return depart, arriver
 
-def main():
+def main(ville_depart, ville_arriver):
     '''valeur d'entrée'''
-    ville_depart = 'LE CHEYLARD'
-    ville_arriver = 'CHARMES'
 
     '''cree un hash dans lequel seront toute les lignes'''
     objets_lignes = {}
@@ -386,10 +382,12 @@ def main():
         print(row)
 
 if __name__ == '__main__':
+    ville_depart = 'LE CHEYLARD'
+    ville_arriver = 'CHARMES'
     #print('1-select 2-insert')
     #choix = input()
     choix = '1' #pour les test
     if choix == '1':
-        main()
+        main(ville_depart, ville_arriver)
     elif choix == '2':
         insert()
