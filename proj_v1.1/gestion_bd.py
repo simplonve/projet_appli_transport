@@ -342,7 +342,11 @@ def select_arriver(tableau, index):
         tab_retour.append(tab_selection)
     return tab_retour
 
-def select(ville_depart, ville_arriver, lignes):
+def select(ville_depart, ville_arriver):
+    '''cree un hash dans lequel seront toute les lignes'''
+    lignes = {}
+    for num_ligne in bd.lignes:
+        lignes[str(num_ligne)] = Ligne(num_ligne)
 
     for ligne in lignes:
         if ville_depart in lignes[ligne].ville_aller and ville_arriver in lignes[ligne].ville_aller:
@@ -365,15 +369,12 @@ def select(ville_depart, ville_arriver, lignes):
     arriver = select_arriver(arriver, index_selection)
     return depart, arriver
 
-def main(ville_depart, ville_arriver):
+def main():
     '''valeur d'entrée'''
+    ville_depart = 'LE CHEYLARD'
+    ville_arriver = 'CHARMES'
 
-    '''cree un hash dans lequel seront toute les lignes'''
-    objets_lignes = {}
-    for num_ligne in bd.lignes:
-        objets_lignes[str(num_ligne)] = Ligne(num_ligne)
-
-    depart, arriver = select(ville_depart, ville_arriver, objets_lignes)
+    depart, arriver = select(ville_depart, ville_arriver)
 
     for row in depart:
         print(row)
@@ -382,12 +383,10 @@ def main(ville_depart, ville_arriver):
         print(row)
 
 if __name__ == '__main__':
-    ville_depart = 'LE CHEYLARD'
-    ville_arriver = 'CHARMES'
     #print('1-select 2-insert')
     #choix = input()
     choix = '1' #pour les test
     if choix == '1':
-        main(ville_depart, ville_arriver)
+        main()
     elif choix == '2':
         insert()
