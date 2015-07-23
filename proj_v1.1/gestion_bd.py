@@ -360,8 +360,9 @@ def select(ville_depart, ville_arriver, lignes):
 
     depart, arriver = select_depart_arriver(fiche_horaire, index_jour, ville_depart, ville_arriver)
 
-    print(num_ligne, sens)
-    if num_ligne == 12 and sens == 'aller': depart = depart[1:]
+
+    if num_ligne == '12' and sens == 'aller':
+        depart = depart[1:]
     depart, index_selection = select_depart(depart)
     arriver = select_arriver(arriver, index_selection)
     return depart, arriver
@@ -383,8 +384,6 @@ def main():
 
     for row in arriver:
         print(row)
-
-#PROBLEME : ne prend pas en comtpe la ligne 378
 
 if __name__ == '__main__':
     #print('1-select 2-insert')
