@@ -4,7 +4,7 @@
 import kivy
 kivy.require('1.9.0')
 
-import requete
+import gestion_bd
 
 from time import localtime, strftime
 from kivy.app import App
@@ -31,9 +31,6 @@ class Ville(DropDown):
         print i
 
 class SelectionArretDepart(Screen):
-    translateInput = ObjectProperty(None)
-    translateButton = ObjectProperty(None)
-    translateLabel = ObjectProperty(None)
     top_layout = ObjectProperty(None)
     dd_bnt = ObjectProperty (None)
 
@@ -42,7 +39,7 @@ class SelectionArretDepart(Screen):
         self.drop_down = Ville()
 
         dropdown = DropDown()
-        villes = requete.recup_list_ville_kivy()
+        villes = gestion_bd.select_ville()
         for ville in villes:
             btn = Button(text='%r' % ville, size_hint_y=None, height=30)
             btn.bind(on_release=lambda btn: dropdown.select(btn.text))
@@ -57,9 +54,6 @@ class SelectionArretDepart(Screen):
         self.top_layout.add_widget(mainbutton)
 
 class SelectionArretArrive(Screen):
-    translateInput = ObjectProperty(None)
-    translateButton = ObjectProperty(None)
-    translateLabel = ObjectProperty(None)
     top_layout = ObjectProperty(None)
     dd_bnt = ObjectProperty (None)
 
@@ -68,7 +62,7 @@ class SelectionArretArrive(Screen):
         self.drop_down = Ville()
 
         dropdown = DropDown()
-        villes = requete.recup_list_ville_kivy()
+        villes = gestion_bd.select_ville()
         for ville in villes:
             btn = Button(text='%r' % ville, size_hint_y=None, height=30)
             btn.bind(on_release=lambda btn: dropdown.select(btn.text))
@@ -81,6 +75,7 @@ class SelectionArretArrive(Screen):
         dropdown.bind(on_select=lambda instance, x: setattr(mainbutton, 'text', x))
 
         self.top_layout.add_widget(mainbutton)
+
 
 class Timer(Label):
     def update(self, *args):
