@@ -54,3 +54,16 @@
         #cols: 2
         size_hint: .5, .05
         pos_hint: {'x': .25, 'y': .5}
+
+<BoutonValider>:
+    id: home_screen
+    top_layout: topLayoutID
+
+    orientation: 'vertical'
+    FloatLayout:
+        size_hint: 1, .95
+
+    BoxLayout:
+        id: topLayoutID
+        size_hint: .3, .03
+        pos_hint: {'x': .10, 'y': .10}

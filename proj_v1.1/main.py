@@ -27,8 +27,7 @@ from kivy.properties import NumericProperty, ReferenceListProperty,\
 
 
 class Ville(DropDown):
-    for i in range(40):
-        print(i)
+    pass
 
 class SelectionArretDepart(Screen):
     top_layout = ObjectProperty(None)
@@ -73,8 +72,19 @@ class SelectionArretArrive(Screen):
         mainbutton.bind(on_release=dropdown.open)
 
         dropdown.bind(on_select=lambda instance, x: setattr(mainbutton, 'text', x))
-
+        #self.value = mainbutton.text
         self.top_layout.add_widget(mainbutton)
+
+class BoutonValider(Screen):
+    def __init__(self, *args, **kargs):
+        super(BoutonValider, self).__init__(*args, **kargs)
+        btn1 = Button(text='Valider')
+        btn1.bind(on_press=self.callback)
+        self.top_layout.add_widget(btn1)
+
+    def callback(instance, value):
+        #print(arreta.value)
+        print('My button <%s> state is <%s>' % (instance, value.text))
 
 
 class Timer(Label):
@@ -91,11 +101,13 @@ class TransportApp(App):
         time = Timer()
         arretd = SelectionArretDepart()
         arreta = SelectionArretArrive()
+        valider = BoutonValider()
         Clock.schedule_interval(time.update, 1)
         root.add_widget(graph)
         root.add_widget(time)
         root.add_widget(arretd)
         root.add_widget(arreta)
+        root.add_widget(valider)
         return root
 
 if __name__ == '__main__':
