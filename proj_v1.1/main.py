@@ -49,7 +49,7 @@ class SelectionArretDepart(Screen):
             dropdown.add_widget(btn)
 
         mainbutton = Button(text='Selectionner votre arrêt de départ:', size_hint=(1,1))
-        
+
         mainbutton.bind(on_release=dropdown.open)
 
         dropdown.bind(on_select=lambda instance, x: setattr(mainbutton, 'text', x))
