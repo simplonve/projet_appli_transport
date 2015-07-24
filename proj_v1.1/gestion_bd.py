@@ -151,9 +151,9 @@ class Temps(object):
         self.heure = self.init_heure()
         self.numJourAn = self.init_numjouran()
         self.numJourSem = self.init_numjoursem()
-        self.jour = ['Lundi', 'Mardi', 'mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'][self.numJourSem-1]
-        self.vacances = {'vac_ete': ['5/07/2015', '1/09/2015'], 'toussaint': ['17/10/2015', '2/11/2015'], 'noel': ['19/12/2015', '4/01/2016'], 'hiver': ['13/02/2016', '29/02/2016'], 'printemps': ['9/04/2016', '25/04/2016']}
         self.jour_feries = ['15/8/2015','1/11/2015','11/11/2015','25/12/2015','1/1/2016','28/3/2016','1/5/2016','5/5/2016','16/5/2016','14/7/2016']
+        self.jour = self.init_jour()
+        self.vacances = {'vac_ete': ['5/07/2015', '1/09/2015'], 'toussaint': ['17/10/2015', '2/11/2015'], 'noel': ['19/12/2015', '4/01/2016'], 'hiver': ['13/02/2016', '29/02/2016'], 'printemps': ['9/04/2016', '25/04/2016']}
         self.periode = self.init_periode()
 
     def init_date(self):
@@ -190,6 +190,11 @@ class Temps(object):
         jour = (annee+(annee//4)-(annee//100)+(annee//400)+self.numJourAn) % 7
         if jour == 0: jour = 7
         return jour
+
+    def init_jour(self):
+        if self.date in self.jour_feries:
+            return 'Ferie'
+        return ['Lundi', 'Mardi', 'mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'][self.numJourSem-1]
 
     def date_anterieur(self, premiere_date, seconde_date):
         '''Dit si une premiere date est antèrieure ou égale à une seconde date'''
