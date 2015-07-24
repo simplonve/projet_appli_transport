@@ -6,7 +6,7 @@ repéré avec #ligne de test
 '''
 
 import os
-import Data
+import Data 
 from time import localtime, strftime
 from datetime import datetime
 
@@ -153,6 +153,7 @@ class Temps(object):
         self.numJourSem = self.init_numjoursem()
         self.jour = ['Lundi', 'Mardi', 'mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'][self.numJourSem-1]
         self.vacances = {'vac_ete': ['5/07/2015', '1/09/2015'], 'toussaint': ['17/10/2015', '2/11/2015'], 'noel': ['19/12/2015', '4/01/2016'], 'hiver': ['13/02/2016', '29/02/2016'], 'printemps': ['9/04/2016', '25/04/2016']}
+        self.jour_feries = ['15/8/2015','1/11/2015','11/11/2015','25/12/2015','1/1/2016','28/3/2016','1/5/2016','5/5/2016','16/5/2016','14/7/2016']
         self.periode = self.init_periode()
 
     def init_date(self):
@@ -268,7 +269,7 @@ class Select(object):
     def init_num_ligne(self):
         '''Détermine le numéro de la ligne'''
         for ligne in self.lignes:
-            if self.ville_depart in self.lignes[ligne].villes_aller and self.ville_arriver in self.lignes[ligne].villes_aller:
+            if self.ville_depart in self.lignes[ligne].ville_aller and self.ville_arriver in self.lignes[ligne].ville_aller:
                 return ligne
 
     def init_sens(self):
