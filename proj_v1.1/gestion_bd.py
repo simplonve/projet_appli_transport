@@ -153,6 +153,7 @@ class Temps(object):
         self.numJourSem = self.init_numjoursem()
         self.jour = ['Lundi', 'Mardi', 'mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'][self.numJourSem-1]
         self.vacances = {'vac_ete': ['5/07/2015', '1/09/2015'], 'toussaint': ['17/10/2015', '2/11/2015'], 'noel': ['19/12/2015', '4/01/2016'], 'hiver': ['13/02/2016', '29/02/2016'], 'printemps': ['9/04/2016', '25/04/2016']}
+        self.jour_feries = ['15/8/2015','1/11/2015','11/11/2015','25/12/2015','1/1/2016','28/3/2016','1/5/2016','5/5/2016','16/5/2016','14/7/2016']
         self.periode = self.init_periode()
 
     def init_date(self):
@@ -411,7 +412,7 @@ if __name__ == '__main__':#lignes de test
     #choix = input()
     choix = '1'
     if choix == '1':
-        test_select = Select('MONTELIMAR', 'CRUAS')
+        test_select = Select('LE CHEYLARD', 'CHARMES')
         print(test_select.index_heure)
         for row in test_select.depart: print(row)
         for row in test_select.arriver: print(row)
