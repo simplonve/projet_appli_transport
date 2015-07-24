@@ -5,7 +5,7 @@ from kivy.adapters.listadapter import ListAdapter
 class MainView(BoxLayout):
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super(MainView, self).__init__(**kwargs)
         self.orientation = 'vertical'
 
         self.list_adapter = ListAdapter(
