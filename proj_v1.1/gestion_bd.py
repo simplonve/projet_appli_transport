@@ -6,7 +6,7 @@ repéré avec #ligne de test
 '''
 
 import os
-import Data
+import Data, time, random
 from time import localtime, strftime
 from datetime import datetime
 
@@ -170,7 +170,6 @@ class Temps(object):
         heure = strftime("%H:%M", localtime())
         heure = heure.split(':')
         heure = int(str(heure[0])+str(heure[1]))
-        heure = 800 #ligne de test
         return heure
 
     def init_numjouran(self):
@@ -296,7 +295,6 @@ class Select(object):
         index_jour.append(1)
         index_jour.append(0)
         index_jour.reverse()
-        print(index_jour)
         return index_jour
 
     def init_depart_arriver(self):
@@ -374,23 +372,47 @@ def select_ville():
     villes_aller.sort()
     return villes_aller
 
-def select(depart, arriver):
+def select_seconde_ville(ville_selectionne):
+    '''Recupère la liste des villes et la renvoi sous forme de tableau'''
+    villes_retour = []
+    periode = ['scol', 'vac_ete', 'autres_vac']
+
+    for ligne in Data.lignes:
+        villes = []
+        for sens in Data.lignes[ligne]:
+            if sens == 'aller':
+                for row in Data.lignes[ligne][sens]:
+                    for i in range(len(row)):
+                        if row[i][0] not in villes and row[i][0] not in periode:
+                            villes.append(row[i][0])
+        if ville_selectionne in villes:
+            villes_retour = villes
+
+    villes_retour.remove(ville_selectionne)
+    villes_retour.sort()
+    return villes_retour
+
+def select_horaire(depart, arriver):
     '''Le select général
     Les valeurs demandées sont sous cette forme:
     depart = 'LE CHEYLARD'
     arriver = 'CHARMES'
     '''
-    selection = Select(depart, arriver)
-    return selection.depart, selection.arriver
+    if depart != None or arriver != None:
+        selection = Select(depart, arriver)
+        return selection.depart, selection.arriver
+    else:
+        return 'ERREUR'
 
 ################################################
 
 if __name__ == '__main__':#lignes de test
     #print('1-select 2-insert')
     #choix = input()
-    choix = '2'
+    choix = '1'
     if choix == '1':
-        test_select = Select('LE CHEYLARD', 'CHARMES')
+        test_select = Select('MONTELIMAR', 'CRUAS')
+        print(test_select.index_heure)
         for row in test_select.depart: print(row)
         for row in test_select.arriver: print(row)
 
