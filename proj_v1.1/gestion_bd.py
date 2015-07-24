@@ -269,7 +269,7 @@ class Select(object):
     def init_num_ligne(self):
         '''Détermine le numéro de la ligne'''
         for ligne in self.lignes:
-            if self.ville_depart in self.lignes[ligne].ville_aller and self.ville_arriver in self.lignes[ligne].ville_aller:
+            if self.ville_depart in self.lignes[ligne].villes_aller and self.ville_arriver in self.lignes[ligne].villes_aller:
                 return ligne
 
     def init_sens(self):
