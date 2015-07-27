@@ -271,6 +271,7 @@ class Select(object):
         self.depart, self.arriver = self.init_depart_arriver()
         self.select_horaire(self.depart)
         self.select_horaire(self.arriver)
+        self.retour = self.mise_en_forme(self.depart, self.arriver)
 
     def init_lignes(self):
         '''Initialise le dictionnaire contenant les objets ligne'''
@@ -368,6 +369,39 @@ class Select(object):
             tab_retour.append(tab_selection)
         return tab_retour
 
+    def mise_en_forme(self, depart, arriver):
+        '''Met en forme le dictionnaire de retour'''
+        dico_retour = {}
+        '''Met en forme le départ'''
+        dico_retour[self.ville_depart] = {}
+        for i in range(len(depart)):
+            depart[i] = depart[i][1:]
+
+        try:
+            for i in range(len(depart)):
+                buffer_depart = []
+                if i == 0:continue
+                for row in depart:
+                    buffer_depart.append([row[0], row[i]])
+                dico_retour[self.ville_depart]['bus'+str(i)] = buffer_depart
+        except:pass
+
+        '''Met en forme l'arriver'''
+        dico_retour[self.ville_arriver] = {}
+        for i in range(len(arriver)):
+            arriver[i] = arriver[i][1:]
+
+        try:
+            for i in range(len(arriver)):
+                buffer_arriver = []
+                if i == 0:continue
+                for row in arriver:
+                    buffer_arriver.append([row[0], row[i]])
+                dico_retour[self.ville_arriver]['bus'+str(i)] = buffer_arriver
+        except:pass
+
+        return dico_retour
+
 ################################################
 '''Section fonctions app'''
 
@@ -416,8 +450,7 @@ def select_horaire(depart, arriver):
     '''
     if depart != None or arriver != None:
         selection = Select(depart, arriver)
-        retour = selection.depart, selection.arriver
-        return retour
+        return selection.retour
     else:
         return 'ERREUR'
 
@@ -429,6 +462,7 @@ if __name__ == '__main__':#lignes de test
     choix = '1'
     if choix == '1':
         test_select = Select('LE CHEYLARD', 'CHARMES')
+        for row in test_select.retour: print(row, test_select.retour[row])
         #for row in test_select.depart: print(row)
         #for row in test_select.arriver: print(row)
 
