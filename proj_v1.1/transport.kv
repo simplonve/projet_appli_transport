@@ -10,26 +10,6 @@
             size: self.size
             source: "Images/fond.png"
 
-<Timer>:
-	font_size: 30
-	center_x: root.width * 5 / 6
-	top: root.height * 1.4
-	color: 1,0,0,1
-
-<SelectionArretDepart>:
-    id: home_screen
-    top_layout: topLayoutID
-
-    orientation: 'vertical'
-    FloatLayout: 
-        size_hint: 1, .95
-
-    BoxLayout:
-        id: topLayoutID
-        #cols: 2
-        size_hint: .5, .05
-        pos_hint: {'x': .25, 'y': .75}
-
 <SelectionArretArrive>:
     id: home_screen
     top_layout: topLayoutID

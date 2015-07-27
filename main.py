@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 import kivy
 kivy.require('1.9.0')
 
@@ -10,14 +9,10 @@ from kivy.uix.widget import Widget
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
-from kivy.graphics import Color, Rectangle
 from kivy.uix.floatlayout import FloatLayout
-from kivy.properties import NumericProperty, ReferenceListProperty,\
-	ObjectProperty, ListProperty, StringProperty
 
 Window.size=(720, 1280)
 Window.clearcolor = (.5, .5, .5, 1)
-
 
 class accueil(Widget):
 	def position(self):

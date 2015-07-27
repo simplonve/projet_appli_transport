@@ -2,25 +2,52 @@
 # -*- coding: utf-8 -*-
 import kivy
 kivy.require('1.9.0')
+
 import gestion_bd
 from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.listview import ListView, ListItemButton
-from kivy.adapters.listadapter import ListAdapter
+from kivy.core.window import Window
 from kivy.uix.widget import Widget
+from kivy.uix.button import Button
+from kivy.adapters.listadapter import ListAdapter
+from kivy.uix.listview import ListView, ListItemButton
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
 from kivy.uix.floatlayout import FloatLayout
 
-class Designe(Widget):
-    pass
+Window.size=(720, 1280)
+Window.clearcolor = (0.3, 0.3, 0.3, 1)
 
-class MainView(BoxLayout):
+class MainApp(App):
+    def build(self):
+        self.parent = FloatLayout()
+        self.titre = Label(text='[color=2ecc71]Le Sept[/color]',
+                    markup= True,
+                    font_size= 50,
+                    pos_hint={'x': 0, 'center_y': 0.8})
+        self.bouton = Button(text='[color=2ecc71]Rechercher un horaire[/color]',
+                        font_size_hint= 0.1,
+                        markup= True,
+                        size_hint=(0.3,0.1),
+                        pos_hint={'x': 0.35, 'center_y': 0.3})
+
+        self.bouton.bind(on_press=self.ville_depart)
+
+        self.parent.add_widget(self.titre)
+        self.parent.add_widget(self.bouton)
+        return self.parent
+
+    def ville_depart(self, value):
+        self.parent.remove_widget(self.titre)
+        self.parent.remove_widget(self.bouton)
+        liste_ville = ListeVille()
+        self.parent.add_widget(liste_ville.list_view)
+
+class ListeVille(MainApp):
     def __init__(self, **kwargs):
-        super(MainView, self).__init__(**kwargs)
+        super(MainApp, self).__init__(**kwargs)
         self.orientation = 'vertical'
         self.ville_depart = None
         self.ville_arriver = None
-        self.graph = Designe()
-        self.add_widget(self.graph)
 
         self.list_adapter = ListAdapter(
             data=gestion_bd.select_ville(),
@@ -47,17 +74,9 @@ class MainView(BoxLayout):
                 print(gestion_bd.select_horaire(self.ville_depart, self.ville_arriver))
                 #self.list_adapter.data = gestion_bd.select_horaire(str(self.ville_depart, self.ville_arriver))
 
-class TransportApp(App):
-    def build(self):
-        root = FloatLayout()
-        graph = Designe()
-        root.add_widget(graph)
-        mv = MainView()
-        root.add_widget(mv.list_view)
-        #root.remove_widget(mv.list_view)
-        return root
+class Affichage(MainApp):
+    def __init__(self, **kwargs):
+        super(MainApp, self).__init__(**kwargs)
 
 if __name__ == '__main__':
-    from kivy.base import runTouchApp
-    #runTouchApp(MainView(width=800))
-    TransportApp().run()
+    MainApp().run()
