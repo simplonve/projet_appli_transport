@@ -179,7 +179,6 @@ class Temps(object):
         heure = strftime("%H:%M", localtime())
         heure = heure.split(':')
         heure = int(str(heure[0])+str(heure[1]))
-        heure = 930 #ligne de test
         return heure
 
     def init_numjouran(self):
@@ -271,10 +270,10 @@ class Select(object):
         self.index_jour =self.init_index_jour()
         self.index_heure = None
         self.depart, self.arriver = self.init_depart_arriver()
-        self.depart = self.select_horaire(self.depart)
-        self.arriver = self.select_horaire(self.arriver)
         self.depart = self.select_arret(self.depart)
         self.arriver = self.select_arret(self.arriver)
+        self.depart = self.select_horaire(self.depart)
+        self.arriver = self.select_horaire(self.arriver)
         self.retour = self.mise_en_forme(self.depart, self.arriver)
 
     def init_lignes(self):
@@ -325,6 +324,7 @@ class Select(object):
             buffer_depart = []
             buffer_arriver = []
             if horaire[0] == self.ville_depart:
+                if horaire[:3] == ['LE CHEYLARD', 'Collège St Louis', '0']:continue
                 for index in self.index_jour:
                     buffer_depart.append(horaire[index])
             elif horaire[0] == self.ville_arriver:
@@ -334,10 +334,6 @@ class Select(object):
                 arriver.append(buffer_arriver)
             if buffer_depart != []:
                 depart.append(buffer_depart)
-
-        if self.num_ligne == '12':
-            depart = depart[1:]
-
         self.index_heure = self.init_index_heure(depart)
         return depart, arriver
 
@@ -347,6 +343,7 @@ class Select(object):
         for DepArr in depart:
             if depart.index(DepArr) == 1: break
             for heure in DepArr:
+                print(heure)
                 try:
                     decoupe = heure.split(':')
                     decoupe = int(str(decoupe[0])+str(decoupe[1]))
@@ -356,19 +353,6 @@ class Select(object):
                 except:
                     index_heure.append(DepArr.index(heure))
         return index_heure
-
-    def select_horaire(self, ligne):
-        '''Renvoi la ville, l'arret et les horaire en fonction des index des heures voulue'''
-        tab_retour = []
-        for arret in ligne:
-            tab_selection = []
-            for heure in arret:
-                if arret.index(heure) in self.index_heure:
-                    tab_selection.append(heure)
-                else:
-                    continue
-            tab_retour.append(tab_selection)
-        return tab_retour
 
     def select_arret(self, ligne):
         if ligne[0][0] == self.ville_depart:
@@ -388,6 +372,16 @@ class Select(object):
                 else:
                     continue
             return tab_retour
+
+    def select_horaire(self, arret):
+        '''Renvoi la ville, l'arret et les horaire en fonction des index des heures voulue'''
+        tab_retour = []
+        for heure in arret:
+            if arret.index(heure) in self.index_heure:
+                tab_retour.append(heure)
+            else:
+                 continue
+        return tab_retour
 
     def mise_en_forme(self, depart, arriver):
         '''Met en forme le dictionnaire de retour'''
