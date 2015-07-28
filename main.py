@@ -30,13 +30,13 @@ class MainApp(App):
         ''''Initialisation de l'app (text et bouton)'''
         self.fenetre = FloatLayout()
         self.date = self.init_date()
-        self.label_ville_depart = 'LE CHEYLARD, Gendarmerie' #pour les test : 'Ville de départ !' en temp normal
-        self.ville_depart = 'LE CHEYLARD' #pour les test : None en temp normal
-        self.arret_depart = 'Gendarmerie' #pour les test : None en temp normal
+        self.label_ville_depart = 'Ville de départ !' #pour les test : 'Ville de départ !' en temp normal
+        self.ville_depart = None #pour les test : None en temp normal
+        self.arret_depart = None #pour les test : None en temp normal
         self.status_ville_depart = None #permet de gerer si c'est pour le bouton de depart ou d'arriver
-        self.label_ville_arriver = 'Gendarmerie, Centre' #pour les test : 'Ville d\'arriver !' en temp normal
-        self.ville_arriver = 'CHARMES' #pour les test : None en temp normal
-        self.arret_arriver = 'Centre' #pour les test : None en temp normal
+        self.label_ville_arriver = 'Ville d\'arriver !' #pour les test : 'Ville d\'arriver !' en temp normal
+        self.ville_arriver = None #pour les test : None en temp normal
+        self.arret_arriver = None #pour les test : None en temp normal
         self.init_list_adapter_alphabet()
         self.init_list_adapter_ville([])
         self.init_list_adapter_arret([])
