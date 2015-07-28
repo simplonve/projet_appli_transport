@@ -13,8 +13,9 @@ from kivy.core.text import LabelBase
 from kivy.uix.floatlayout import FloatLayout
 from kivy.adapters.listadapter import ListAdapter
 from kivy.uix.listview import ListView, ListItemButton
+from kivy.core.text import LabelBase
+from kivy.core.text import LabelBase
 
-Window.size=(720, 1280)
 Window.clearcolor = (1, 1, 1, 1)
 KIVY_FONTS = [{
         "name": "Soft Elegance",
@@ -54,9 +55,9 @@ class MainApp(App):
         self.init_bouton_label_ville_arriver()
 
         self.bouton_recherche = Button(text='[color=682279]Recherche[/color]',
-                    font_size_hint= 1,
+                    font_size_hint=1,
                     font_name= 'fonts/Soft Elegance.ttf',
-                    markup= True,
+                    markup=True,
                     size_hint=(0.3,0.05),
                     pos_hint={'x': 0.35, 'center_y': 0.2})
 
@@ -120,11 +121,12 @@ class MainApp(App):
     def init_bouton_label_ville_arriver(self):
         '''Initialise le bouton ville d'arriver'''
         self.bouton_label_ville_arriver = Button(text='[color=682279]'+self.label_ville_arriver+'[/color]',
-                    font_size_hint= 0.5,
-                    font_name= "fonts/Soft Elegance.ttf",
-                    markup= True,
-                    size_hint=(0.3,0.05),
-                    pos_hint={'x': 0.35, 'center_y': 0.4})
+                font_size_hint= 0.5,
+                markup= True,
+                font_name= "fonts/Soft Elegance.ttf",
+                size_hint=(0.3,0.05),
+                pos_hint={'x': 0.35, 'center_y': 0.4})
+
 
     def afficher_alphabet(self, value):
         '''Affiche la liste de l'alphabet'''
@@ -245,7 +247,7 @@ class MainApp(App):
             font_size= 25,
             pos_hint={'x': 0.2, 'center_y': 0.83})
 
-        self.affichage_date = Label(text='[color=682279]'+str(self.date),
+        self.affichage_date = Label(text='[color=682279]'+str(self.date)+'[/color]',
             markup= True,
             font_size= 25,
             pos_hint={'x': -0.38, 'center_y': 0.98})
