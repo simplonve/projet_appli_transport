@@ -6,14 +6,26 @@ import gestion_bd
 from kivy.app import App
 from datetime import datetime
 from kivy.uix.label import Label
+from kivy.uix.image import Image
 from kivy.uix.button import Button
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
 from kivy.adapters.listadapter import ListAdapter
 from kivy.uix.listview import ListView, ListItemButton
+from kivy.core.text import LabelBase
+from kivy.core.text import LabelBase
 
-Window.size=(720, 1280)
-Window.clearcolor = (0.3, 0.3, 0.3, 1)
+Window.clearcolor = (1, 1, 1, 1)
+
+KIVY_FONTS = [
+    {
+        "name": "Soft Elegance",
+        "fn_regular": "fonts/Soft Elegance.ttf",
+    }
+]
+    
+for font in KIVY_FONTS:
+    LabelBase.register(**font)
 
 class MainApp(App):
     def build(self):
@@ -30,13 +42,13 @@ class MainApp(App):
         self.init_list_adapter_alphabet()
         self.init_list_adapter_ville([])
         self.init_list_adapter_arret([])
-        self.titre = Label(text='[color=2ecc71]Le Sept[/color]',
-                    markup= True,
-                    font_size= 50,
-                    pos_hint={'x': 0, 'center_y': 0.8})
+        self.titre = Image(source='Images/le_sept.png',
+                    size_hint=(.6, .8),
+                    pos_hint={'x': 0.2, 'center_y': 0.80})
 
-        self.bouton_date = Button(text='[color=2ecc71]'+self.date+'[/color]',
-                    font_size_hint= 0.5,
+        self.bouton_date = Button(text='[color=682279]'+self.date+'[/color]',
+                    font_size_hint= 1,
+                    font_name= 'fonts/Soft Elegance.ttf',
                     markup= True,
                     size_hint=(0.3,0.05),
                     pos_hint={'x': 0.35, 'center_y': 0.6})
@@ -44,8 +56,9 @@ class MainApp(App):
         self.init_bouton_label_ville_depart()
         self.init_bouton_label_ville_arriver()
 
-        self.bouton_recherche = Button(text='[color=2ecc71]Recherche[/color]',
-                    font_size_hint= 0.5,
+        self.bouton_recherche = Button(text='[color=682279]Recherche[/color]',
+                    font_size_hint= 1,
+                    font_name= "fonts/Soft Elegance.ttf",
                     markup= True,
                     size_hint=(0.3,0.05),
                     pos_hint={'x': 0.35, 'center_y': 0.2})
@@ -100,19 +113,21 @@ class MainApp(App):
 
     def init_bouton_label_ville_depart(self):
         '''Initialise le bouton ville de depart'''
-        self.bouton_label_ville_depart = Button(text='[color=2ecc71]'+self.label_ville_depart+'[/color]',
+        self.bouton_label_ville_depart = Button(text='[color=682279]'+self.label_ville_depart+'[/color]',
                 font_size_hint= 0.5,
                 markup= True,
+                font_name= "fonts/Soft Elegance.ttf",
                 size_hint=(0.3,0.05),
                 pos_hint={'x': 0.35, 'center_y': 0.5})
 
     def init_bouton_label_ville_arriver(self):
         '''Initialise le bouton ville d'arriver'''
-        self.bouton_label_ville_arriver = Button(text='[color=2ecc71]'+self.label_ville_arriver+'[/color]',
-                    font_size_hint= 0.5,
-                    markup= True,
-                    size_hint=(0.3,0.05),
-                    pos_hint={'x': 0.35, 'center_y': 0.4})
+        self.bouton_label_ville_arriver = Button(text='[color=682279]'+self.label_ville_arriver+'[/color]',
+                font_size_hint= 0.5,
+                markup= True,
+                font_name= "fonts/Soft Elegance.ttf",
+                size_hint=(0.3,0.05),
+                pos_hint={'x': 0.35, 'center_y': 0.4})
 
     def afficher_alphabet(self, value):
         '''Affiche la liste de l'alphabet'''
@@ -213,47 +228,47 @@ class MainApp(App):
     def afficher_resultat(self):
         '''Vide la fenêtre et affiche les resultats'''
         self.fenetre.clear_widgets()
-        self.affichage_ville_depart = Label(text=self.ville_depart,
+        self.affichage_ville_depart = Label(text='[color=682279]'+self.ville_depart+'[/color]',
             markup= True,
-            font_size= 15,
+            font_size= 25,
             pos_hint={'x': -0.2, 'center_y': 0.90})
 
-        self.affichage_ville_arriver = Label(text=self.ville_arriver,
+        self.affichage_ville_arriver = Label(text='[color=682279]'+self.ville_arriver+'[/color]',
             markup= True,
-            font_size= 15,
+            font_size= 25,
             pos_hint={'x': 0.2, 'center_y': 0.90})
 
-        self.affichage_arret_depart = Label(text=self.arret_depart,
+        self.affichage_arret_depart = Label(text='[color=682279]'+self.arret_depart+'[/color]',
             markup= True,
-            font_size= 15,
-            pos_hint={'x': -0.2, 'center_y': 0.88})
+            font_size= 25,
+            pos_hint={'x': -0.2, 'center_y': 0.83})
 
-        self.affichage_arret_arriver = Label(text=self.arret_arriver,
+        self.affichage_arret_arriver = Label(text='[color=682279]'+self.arret_arriver+'[/color]',
             markup= True,
-            font_size= 15,
-            pos_hint={'x': 0.2, 'center_y': 0.88})
+            font_size= 25,
+            pos_hint={'x': 0.2, 'center_y': 0.83})
 
-        self.affichage_date = Label(text=str(self.date),
+        self.affichage_date = Label(text='[color=682279]'+str(self.date)+'[/color]',
             markup= True,
-            font_size= 15,
-            pos_hint={'x': -0.43, 'center_y': 0.98})
+            font_size= 25,
+            pos_hint={'x': -0.38, 'center_y': 0.98})
 
         '''Pour chaque horaire, l'affiche'''
         for ville in self.retour:
             i = 1
             for bus in self.retour[ville]:
                 if ville == self.ville_depart:
-                    self.affichage_horaire_depart = Label(text='Départ à '+self.retour[ville]['bus'+str(i)][1],
+                    self.affichage_horaire_depart = Label(text='[color=682279]Départ à '+self.retour[ville]['bus'+str(i)][1]+'[/color]',
                         markup= True,
-                        font_size= 15,
-                        pos_hint={'x': -0.2, 'center_y': 0.85-(i/16)})
+                        font_size= 30,
+                        pos_hint={'x': -0.2, 'center_y': 0.70-(i/16)})
                     self.fenetre.add_widget(self.affichage_horaire_depart)
                     i += 1
                 else:
-                    self.affichage_horaire_arriver = Label(text='Arrivée à '+self.retour[ville]['bus'+str(i)][1],
+                    self.affichage_horaire_arriver = Label(text='[color=682279]Arrivée à '+self.retour[ville]['bus'+str(i)][1]+'[/color]',
                         markup= True,
-                        font_size= 15,
-                        pos_hint={'x': 0.2, 'center_y': 0.85-(i/16)})
+                        font_size= 30,
+                        pos_hint={'x': 0.2, 'center_y': 0.70-(i/16)})
                     self.fenetre.add_widget(self.affichage_horaire_arriver)
                     i += 1
 
