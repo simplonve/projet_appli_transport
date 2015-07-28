@@ -4,16 +4,16 @@
 title = Le Sept
 
 # (str) Package name
-package.name = lesept
+package.name = projet_appli_transport
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.test
+package.domain = simplon
 
 # (str) Source code where the main.py live
-source.dir = .
-
+source.dir = /home/remi/Documents/projet_appli_transport/
+/
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas
+source.include_exts =
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
@@ -148,7 +148,7 @@ fullscreen = 1
 [buildozer]
 
 # (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
-log_level = 1
+log_level = 2
 
 # (int) Display warning if buildozer is run as root (0 = False, 1 = True)
 warn_on_root = 1
