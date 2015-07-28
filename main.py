@@ -9,6 +9,7 @@ from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.uix.button import Button
 from kivy.core.window import Window
+from kivy.core.text import LabelBase
 from kivy.uix.floatlayout import FloatLayout
 from kivy.adapters.listadapter import ListAdapter
 from kivy.uix.listview import ListView, ListItemButton
@@ -16,14 +17,11 @@ from kivy.core.text import LabelBase
 from kivy.core.text import LabelBase
 
 Window.clearcolor = (1, 1, 1, 1)
-
-KIVY_FONTS = [
-    {
+KIVY_FONTS = [{
         "name": "Soft Elegance",
         "fn_regular": "fonts/Soft Elegance.ttf",
-    }
-]
-    
+    }]
+
 for font in KIVY_FONTS:
     LabelBase.register(**font)
 
@@ -32,13 +30,13 @@ class MainApp(App):
         ''''Initialisation de l'app (text et bouton)'''
         self.fenetre = FloatLayout()
         self.date = self.init_date()
-        self.label_ville_depart = 'Ville de départ !' #pour les test : 'Ville de départ !' en temp normal
-        self.ville_depart = None #pour les test : None en temp normal
-        self.arret_depart = None #pour les test : None en temp normal
+        self.label_ville_depart = 'LE CHEYLARD, Gendarmerie' #pour les test : 'Ville de départ !' en temp normal
+        self.ville_depart = 'LE CHEYLARD' #pour les test : None en temp normal
+        self.arret_depart = 'Gendarmerie' #pour les test : None en temp normal
         self.status_ville_depart = None #permet de gerer si c'est pour le bouton de depart ou d'arriver
-        self.label_ville_arriver = 'Ville d\'arriver !' #pour les test : 'Ville d\'arriver !' en temp normal
-        self.ville_arriver = None #pour les test : None en temp normal
-        self.arret_arriver = None #pour les test : None en temp normal
+        self.label_ville_arriver = 'Gendarmerie, Centre' #pour les test : 'Ville d\'arriver !' en temp normal
+        self.ville_arriver = 'CHARMES' #pour les test : None en temp normal
+        self.arret_arriver = 'Centre' #pour les test : None en temp normal
         self.init_list_adapter_alphabet()
         self.init_list_adapter_ville([])
         self.init_list_adapter_arret([])
@@ -57,9 +55,9 @@ class MainApp(App):
         self.init_bouton_label_ville_arriver()
 
         self.bouton_recherche = Button(text='[color=682279]Recherche[/color]',
-                    font_size_hint= 1,
-                    font_name= "fonts/Soft Elegance.ttf",
-                    markup= True,
+                    font_size_hint=1,
+                    font_name= 'fonts/Soft Elegance.ttf',
+                    markup=True,
                     size_hint=(0.3,0.05),
                     pos_hint={'x': 0.35, 'center_y': 0.2})
 
@@ -115,8 +113,8 @@ class MainApp(App):
         '''Initialise le bouton ville de depart'''
         self.bouton_label_ville_depart = Button(text='[color=682279]'+self.label_ville_depart+'[/color]',
                 font_size_hint= 0.5,
-                markup= True,
                 font_name= "fonts/Soft Elegance.ttf",
+                markup= True,
                 size_hint=(0.3,0.05),
                 pos_hint={'x': 0.35, 'center_y': 0.5})
 
@@ -128,6 +126,7 @@ class MainApp(App):
                 font_name= "fonts/Soft Elegance.ttf",
                 size_hint=(0.3,0.05),
                 pos_hint={'x': 0.35, 'center_y': 0.4})
+
 
     def afficher_alphabet(self, value):
         '''Affiche la liste de l'alphabet'''
