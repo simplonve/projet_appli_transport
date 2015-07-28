@@ -1,38 +1,3 @@
 #:kivy 1.9.0
 # -*- coding: utf-8 -*-
 
-<Designe>:
-	canvas.before:
-		Color:
-            rgba: 0, 1, 1, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size
-            source: "Images/fond.png"
-
-<SelectionArretArrive>:
-    id: home_screen
-    top_layout: topLayoutID
-
-    orientation: 'vertical'
-    FloatLayout:
-        size_hint: 1, .95
-
-    BoxLayout:
-        id: topLayoutID
-        #cols: 2
-        size_hint: .5, .05
-        pos_hint: {'x': .25, 'y': .5}
-
-<BoutonValider>:
-    id: home_screen
-    top_layout: topLayoutID
-
-    orientation: 'vertical'
-    FloatLayout:
-        size_hint: 1, .95
-
-    BoxLayout:
-        id: topLayoutID
-        size_hint: .3, .03
-        pos_hint: {'x': .10, 'y': .10}

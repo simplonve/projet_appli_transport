@@ -258,10 +258,12 @@ class Temps(object):
 
 class Select(object):
     ''''Objet selection des horaires'''
-    def __init__(self, ville_depart, ville_arriver):
+    def __init__(self, ville_depart, arret_depart, ville_arriver, arret_arriver):
         self.lignes = self.init_lignes()
         self.ville_depart = ville_depart
+        self.arret_depart = arret_depart
         self.ville_arriver = ville_arriver
+        self.arret_arriver = arret_arriver
         self.date = Temps()
         self.num_ligne = self.init_num_ligne()
         self.sens = self.init_sens()
@@ -269,8 +271,10 @@ class Select(object):
         self.index_jour =self.init_index_jour()
         self.index_heure = None
         self.depart, self.arriver = self.init_depart_arriver()
-        self.select_horaire(self.depart)
-        self.select_horaire(self.arriver)
+        self.depart = self.select_horaire(self.depart)
+        self.arriver = self.select_horaire(self.arriver)
+        self.depart = self.select_arret(self.depart)
+        self.arriver = self.select_arret(self.arriver)
         self.retour = self.mise_en_forme(self.depart, self.arriver)
 
     def init_lignes(self):
@@ -335,9 +339,6 @@ class Select(object):
             depart = depart[1:]
 
         self.index_heure = self.init_index_heure(depart)
-        depart = self.select_horaire(depart)
-        arriver = self.select_horaire(arriver)
-
         return depart, arriver
 
     def init_index_heure(self, depart):
@@ -369,79 +370,96 @@ class Select(object):
             tab_retour.append(tab_selection)
         return tab_retour
 
+    def select_arret(self, ligne):
+        if ligne[0][0] == self.ville_depart:
+            tab_retour = []
+            for arret in ligne:
+                if self.arret_depart == arret[1]:
+                    tab_retour = arret
+                    break
+                else:
+                    continue
+            return tab_retour
+        else:
+            tab_retour = []
+            for arret in ligne:
+                if self.arret_arriver == arret[1]:
+                    tab_retour = arret
+                else:
+                    continue
+            return tab_retour
+
     def mise_en_forme(self, depart, arriver):
         '''Met en forme le dictionnaire de retour'''
         dico_retour = {}
         '''Met en forme le départ'''
         dico_retour[self.ville_depart] = {}
+        depart = depart[1:]
         for i in range(len(depart)):
-            depart[i] = depart[i][1:]
-
-        try:
-            for i in range(len(depart)):
-                buffer_depart = []
-                if i == 0:continue
-                for row in depart:
-                    buffer_depart.append([row[0], row[i]])
-                dico_retour[self.ville_depart]['bus'+str(i)] = buffer_depart
-        except:pass
+            if i == 0:continue
+            dico_retour[self.ville_depart]['bus'+str(i)] = [depart[0], depart[i]]
 
         '''Met en forme l'arriver'''
         dico_retour[self.ville_arriver] = {}
+        arriver = arriver[1:]
         for i in range(len(arriver)):
-            arriver[i] = arriver[i][1:]
-
-        try:
-            for i in range(len(arriver)):
-                buffer_arriver = []
-                if i == 0:continue
-                for row in arriver:
-                    buffer_arriver.append([row[0], row[i]])
-                dico_retour[self.ville_arriver]['bus'+str(i)] = buffer_arriver
-        except:pass
+            if i == 0:continue
+            dico_retour[self.ville_arriver]['bus'+str(i)] = [arriver[0], arriver[i]]
 
         return dico_retour
 
 ################################################
 '''Section fonctions app'''
 
-def select_ville():
+def select_villes(lettre_choisi):
     '''Recupère la liste des villes et la renvoi sous forme de tableau'''
     villes_aller = []
     periode = ['scol', 'vac_ete', 'autres_vac']
-
     for ligne in Data.lignes:
         for sens in Data.lignes[ligne]:
             if sens == 'aller':
                 for row in Data.lignes[ligne][sens]:
                     for i in range(len(row)):
                         if row[i][0] not in villes_aller and row[i][0] not in periode:
-                            villes_aller.append(row[i][0])
+                            if row[i][0][0] == lettre_choisi:
+                                villes_aller.append(row[i][0])
 
     villes_aller.sort()
     return villes_aller
 
-def select_seconde_ville(ville_selectionne):
+def select_arrets(ville_selectionne):
+    periode = ['scol', 'vac_ete', 'autres_vac']
+    arrets = []
+    for ligne in Data.lignes:
+        for sens in Data.lignes[ligne]:
+            if sens == 'aller':
+                for row in Data.lignes[ligne][sens]:
+                    for i in range(len(row)):
+                        if row[i][0] not in arrets and row[i][0] not in periode:
+                            if row[i][0] == ville_selectionne and row[i][1] not in arrets:
+                                arrets.append(row[i][1])
+    arrets_retour = arrets
+    arrets_retour.sort()
+    return arrets_retour
+
+def select_seconde_villes(ville_selectionne, lettre_choisi):
     '''Recupère la liste des villes et la renvoi sous forme de tableau'''
-    villes_retour = []
     periode = ['scol', 'vac_ete', 'autres_vac']
 
+    villes = []
     for ligne in Data.lignes:
-        villes = []
         for sens in Data.lignes[ligne]:
             if sens == 'aller':
                 for row in Data.lignes[ligne][sens]:
                     for i in range(len(row)):
                         if row[i][0] not in villes and row[i][0] not in periode:
-                            villes.append(row[i][0])
-        if ville_selectionne in villes:
-            villes_retour = villes
-
-    villes_retour.remove(ville_selectionne)
+                            if row[i][0][0] == lettre_choisi and row[i][0] != ville_selectionne:
+                                villes.append(row[i][0])
+    villes_retour = villes
     villes_retour.sort()
     return villes_retour
 
-def select_horaire(depart, arriver):
+def select_horaire(depart, arret_depart, arriver, arret_arriver):
     '''
     Le select général
     Les valeurs demandées sont sous cette forme:
@@ -449,7 +467,7 @@ def select_horaire(depart, arriver):
     arriver = 'CHARMES'
     '''
     if depart != None or arriver != None:
-        selection = Select(depart, arriver)
+        selection = Select(depart, arret_depart, arriver, arret_arriver)
         return selection.retour
     else:
         return 'ERREUR'
@@ -461,8 +479,9 @@ if __name__ == '__main__':#lignes de test
     #choix = input()
     choix = '1'
     if choix == '1':
-        test_select = Select('LE CHEYLARD', 'CHARMES')
-        for row in test_select.retour: print(row, test_select.retour[row])
+        print(select_horaire('LE CHEYLARD', 'Gendarmerie', 'CHARMES', 'Centre'))
+        #test_select = Select('LE CHEYLARD', 'CHARMES')
+        #for row in test_select.retour: print(row, test_select.retour[row])
         #for row in test_select.depart: print(row)
         #for row in test_select.arriver: print(row)
 
