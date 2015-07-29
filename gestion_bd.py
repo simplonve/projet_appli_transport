@@ -179,7 +179,6 @@ class Temps(object):
         heure = strftime("%H:%M", localtime())
         heure = heure.split(':')
         heure = int(str(heure[0])+str(heure[1]))
-        heure = 930
         return heure
 
     def init_numjouran(self):
@@ -344,7 +343,8 @@ class Select(object):
         for DepArr in depart:
             if depart.index(DepArr) == 1: break
             for heure in DepArr:
-                print(heure)
+                if heure == 'ND':
+                    continue
                 try:
                     decoupe = heure.split(':')
                     decoupe = int(str(decoupe[0])+str(decoupe[1]))
@@ -492,7 +492,7 @@ if __name__ == '__main__':#lignes de test
     #choix = input()
     choix = '1'
     if choix == '1':
-        print(select_seconde_villes('LE CHEYLARD', 'C'))
+        print(select_horaire('BAIX', 'Entrée Nord', 'CHOMERAC', 'La Clève'))
         #print(select_horaire('LE CHEYLARD', 'Gendarmerie', 'CHARMES', 'Centre'))
         #for row in test_select.retour: print(row, test_select.retour[row])
         #for row in test_select.depart: print(row)

@@ -30,13 +30,13 @@ class MainApp(App):
         ''''Initialisation de l'app (text et bouton)'''
         self.fenetre = FloatLayout()
         self.date = self.init_date()
-        self.label_ville_depart = 'LE CHEYLARD, Gendarmerie' #pour les test : 'Ville de départ !' en temp normal
-        self.ville_depart = 'LE CHEYLARD' #pour les test : None en temp normal
-        self.arret_depart = 'Gendarmerie' #pour les test : None en temp normal
+        self.label_ville_depart = 'Ville de départ !' #pour les test : 'Ville de départ !' en temp normal
+        self.ville_depart = None #pour les test : None en temp normal
+        self.arret_depart = None #pour les test : None en temp normal
         self.status_ville_depart = None #permet de gerer si c'est pour le bouton de depart ou d'arriver
-        self.label_ville_arriver = 'Gendarmerie, Centre' #pour les test : 'Ville d\'arriver !' en temp normal
-        self.ville_arriver = 'CHARMES' #pour les test : None en temp normal
-        self.arret_arriver = 'Centre' #pour les test : None en temp normal
+        self.label_ville_arriver = 'Ville d\'arrivée !' #pour les test : 'Ville d\'arriver !' en temp normal
+        self.ville_arriver = None #pour les test : None en temp normal
+        self.arret_arriver = None #pour les test : None en temp normal
         self.init_list_adapter_alphabet()
         self.init_list_adapter_ville([])
         self.init_list_adapter_arret([])
@@ -45,21 +45,21 @@ class MainApp(App):
                     pos_hint={'x': 0.2, 'center_y': 0.80})
 
         self.bouton_date = Button(text='[color=682279]'+self.date+'[/color]',
-                    font_size_hint= 1,
+                    font_size= 35,
                     font_name= 'fonts/Soft Elegance.ttf',
                     markup= True,
-                    size_hint=(0.3,0.05),
-                    pos_hint={'x': 0.35, 'center_y': 0.6})
+                    size_hint=(.3, .1),
+                    pos_hint={'x': 0.35, 'center_y': 0.55})
 
         self.init_bouton_label_ville_depart()
         self.init_bouton_label_ville_arriver()
 
         self.bouton_recherche = Button(text='[color=682279]Recherche[/color]',
-                    font_size_hint=1,
+                    font_size=35,
                     font_name= 'fonts/Soft Elegance.ttf',
                     markup=True,
-                    size_hint=(0.3,0.05),
-                    pos_hint={'x': 0.35, 'center_y': 0.2})
+                    size_hint=(.3, .1),
+                    pos_hint={'x': 0.35, 'center_y': 0.1})
 
         self.bouton_label_ville_depart.bind(on_press=self.afficher_alphabet)
         self.bouton_label_ville_arriver.bind(on_press=self.afficher_alphabet)
@@ -112,20 +112,20 @@ class MainApp(App):
     def init_bouton_label_ville_depart(self):
         '''Initialise le bouton ville de depart'''
         self.bouton_label_ville_depart = Button(text='[color=682279]'+self.label_ville_depart+'[/color]',
-                font_size_hint= 0.5,
+                font_size= 35,
                 font_name= "fonts/Soft Elegance.ttf",
                 markup= True,
-                size_hint=(0.3,0.05),
-                pos_hint={'x': 0.35, 'center_y': 0.5})
+                size_hint=(0.4,0.1),
+                pos_hint={'x': 0.3, 'center_y': 0.4})
 
     def init_bouton_label_ville_arriver(self):
         '''Initialise le bouton ville d'arriver'''
         self.bouton_label_ville_arriver = Button(text='[color=682279]'+self.label_ville_arriver+'[/color]',
-                font_size_hint= 0.5,
+                font_size=35,
                 markup= True,
                 font_name= "fonts/Soft Elegance.ttf",
-                size_hint=(0.3,0.05),
-                pos_hint={'x': 0.35, 'center_y': 0.4})
+                size_hint=(0.4,0.1),
+                pos_hint={'x': 0.3, 'center_y': 0.25})
 
     def afficher_alphabet(self, value):
         '''Affiche la liste de l'alphabet'''
@@ -221,6 +221,7 @@ class MainApp(App):
         '''Le select général'''
         if self.label_ville_depart != 'Ville de départ !' and self.label_ville_arriver != 'Ville d\'arriver !':
             self.retour = gestion_bd.select_horaire(self.ville_depart, self.arret_depart, self.ville_arriver, self.arret_arriver)
+            print(self.retour)
             self.afficher_resultat()
 
     def afficher_resultat(self):
