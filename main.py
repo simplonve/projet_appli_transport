@@ -47,6 +47,7 @@ class MainApp(App):
         self.bouton_date = Button(text='[color=682279]'+self.date+'[/color]',
                     font_size= 35,
                     font_name= 'fonts/Soft Elegance.ttf',
+                    background_color=(1, 1, 1, 0),
                     markup= True,
                     size_hint=(.3, .1),
                     pos_hint={'x': 0.35, 'center_y': 0.55})
@@ -57,6 +58,7 @@ class MainApp(App):
         self.bouton_recherche = Button(text='[color=682279]Recherche[/color]',
                     font_size=35,
                     font_name= 'fonts/Soft Elegance.ttf',
+                    background_color=(1, 1, 1, 0),
                     markup=True,
                     size_hint=(.3, .1),
                     pos_hint={'x': 0.35, 'center_y': 0.1})
@@ -114,6 +116,7 @@ class MainApp(App):
         self.bouton_label_ville_depart = Button(text='[color=682279]'+self.label_ville_depart+'[/color]',
                 font_size= 35,
                 font_name= "fonts/Soft Elegance.ttf",
+                background_color=(1, 1, 1, 0),
                 markup= True,
                 size_hint=(0.4,0.1),
                 pos_hint={'x': 0.3, 'center_y': 0.4})
@@ -124,6 +127,7 @@ class MainApp(App):
                 font_size=35,
                 markup= True,
                 font_name= "fonts/Soft Elegance.ttf",
+                background_color=(1, 1, 1, 0),
                 size_hint=(0.4,0.1),
                 pos_hint={'x': 0.3, 'center_y': 0.25})
 
