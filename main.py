@@ -85,7 +85,7 @@ class MainApp(App):
     def init_list_adapter_alphabet(self):
         ''''Initialise les données de la liste de l'alphabet'''
         self.list_adapter_alphabet = ListAdapter(
-            data=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+            data=gestion_bd.select_alphabet(),
             cls=ListItemButton,
             sorted_keys=[],
             selection_mode='multiple',
@@ -126,7 +126,6 @@ class MainApp(App):
                 font_name= "fonts/Soft Elegance.ttf",
                 size_hint=(0.3,0.05),
                 pos_hint={'x': 0.35, 'center_y': 0.4})
-
 
     def afficher_alphabet(self, value):
         '''Affiche la liste de l'alphabet'''
@@ -260,14 +259,14 @@ class MainApp(App):
                     self.affichage_horaire_depart = Label(text='[color=682279]Départ à '+self.retour[ville]['bus'+str(i)][1]+'[/color]',
                         markup= True,
                         font_size= 30,
-                        pos_hint={'x': -0.2, 'center_y': 0.70-(i/16)})
+                        pos_hint={'x': -0.2, 'center_y': 0.70-i/16})
                     self.fenetre.add_widget(self.affichage_horaire_depart)
                     i += 1
                 else:
                     self.affichage_horaire_arriver = Label(text='[color=682279]Arrivée à '+self.retour[ville]['bus'+str(i)][1]+'[/color]',
                         markup= True,
                         font_size= 30,
-                        pos_hint={'x': 0.2, 'center_y': 0.70-(i/16)})
+                        pos_hint={'x': 0.2, 'center_y': 0.70-i/16})
                     self.fenetre.add_widget(self.affichage_horaire_arriver)
                     i += 1
 

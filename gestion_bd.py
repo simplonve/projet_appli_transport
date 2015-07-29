@@ -422,6 +422,24 @@ def select_villes(lettre_choisi):
     villes_aller.sort()
     return villes_aller
 
+def select_alphabet():
+    '''Recupère la liste des villes et la renvoi sous forme de tableau'''
+    villes_aller = []
+    periode = ['scol', 'vac_ete', 'autres_vac']
+    for ligne in Data.lignes:
+        for sens in Data.lignes[ligne]:
+            if sens == 'aller':
+                for row in Data.lignes[ligne][sens]:
+                    for i in range(len(row)):
+                        if row[i][0] not in villes_aller and row[i][0] not in periode:
+                                villes_aller.append(row[i][0])
+    villes_aller.sort()
+    alphabet_retour = []
+    alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    for ville in villes_aller:
+        if ville[0] in alphabet and ville[0] not in alphabet_retour: alphabet_retour.append(ville[0])
+    return alphabet_retour
+
 def select_arrets(ville_selectionne):
     periode = ['scol', 'vac_ete', 'autres_vac']
     arrets = []
@@ -474,8 +492,8 @@ if __name__ == '__main__':#lignes de test
     #choix = input()
     choix = '1'
     if choix == '1':
-        print(select_horaire('LE CHEYLARD', 'Gendarmerie', 'CHARMES', 'Centre'))
-        #test_select = Select('LE CHEYLARD', 'CHARMES')
+        print(select_seconde_villes('LE CHEYLARD', 'C'))
+        #print(select_horaire('LE CHEYLARD', 'Gendarmerie', 'CHARMES', 'Centre'))
         #for row in test_select.retour: print(row, test_select.retour[row])
         #for row in test_select.depart: print(row)
         #for row in test_select.arriver: print(row)
