@@ -4,7 +4,7 @@
 title = Le Sept
 
 # (str) Package name
-package.name = projet_appli_transport
+package.name = Sept
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = simplon
@@ -29,7 +29,7 @@ source.include_exts =
 # version.filename = %(source.dir)s/main.py
 
 (str) Application versioning (method 2)
-version = 1.0.0
+version = 0.9.0
 
 # (list) Application requirements
 # comma seperated e.g. requirements = sqlite3,kivy
@@ -46,7 +46,7 @@ requirements = kivy
 #presplash.filename = %(source.dir)s/data/presplash.png
 
 # (str) Icon of the application
-#icon.filename = %(source.dir)s/data/icon.png
+icon.filename = %(source.dir)s/Images/icone_bus_rose.png
 
 # (str) Supported orientation (one of landscape, portrait or all)
 orientation = portrait

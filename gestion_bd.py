@@ -179,7 +179,6 @@ class Temps(object):
         heure = strftime("%H:%M", localtime())
         heure = heure.split(':')
         heure = int(str(heure[0])+str(heure[1]))
-        heure = 930
         return heure
 
     def init_numjouran(self):
