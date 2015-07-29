@@ -480,10 +480,11 @@ def select_horaire(depart, arret_depart, arriver, arret_arriver):
     arriver = 'CHARMES'
     '''
     if depart != None or arriver != None:
-        selection = Select(depart, arret_depart, arriver, arret_arriver)
-        return selection.retour
-    else:
-        return 'ERREUR'
+        try:
+            selection = Select(depart, arret_depart, arriver, arret_arriver)
+            return selection.retour
+        except:
+            return 'ERREUR'
 
 ################################################
 
@@ -492,7 +493,7 @@ if __name__ == '__main__':#lignes de test
     #choix = input()
     choix = '1'
     if choix == '1':
-        print(select_horaire('BAIX', 'Entrée Nord', 'CHOMERAC', 'La Clève'))
+        print(select_horaire('BAIX', 'Entrée Nord', 'LE CHEYLARD', 'Gendarmerie'))
         #print(select_horaire('LE CHEYLARD', 'Gendarmerie', 'CHARMES', 'Centre'))
         #for row in test_select.retour: print(row, test_select.retour[row])
         #for row in test_select.depart: print(row)

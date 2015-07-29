@@ -221,8 +221,25 @@ class MainApp(App):
         '''Le select général'''
         if self.label_ville_depart != 'Ville de départ !' and self.label_ville_arriver != 'Ville d\'arriver !':
             self.retour = gestion_bd.select_horaire(self.ville_depart, self.arret_depart, self.ville_arriver, self.arret_arriver)
-            print(self.retour)
-            self.afficher_resultat()
+            if self.retour == 'ERREUR':
+                self.fenetre.clear_widgets()
+                self.affichage_erreur = Label(text='[color=682279]Quelque chose s\'est mal passer[/color]',
+                        markup= True,
+                        font_size= 35,
+                        pos_hint={'x': 0, 'center_y': 0.60})
+
+                self.bouton_retour = Button(text='[color=682279]Retour[/color]',
+                        font_size= 35,
+                        font_name= "fonts/Soft Elegance.ttf",
+                        markup= True,
+                        size_hint=(0.4,0.1),
+                        pos_hint={'x': 0.3, 'center_y': 0.4})
+
+                self.bouton_retour.bind(on_press=MainApp().run())
+                self.fenetre.add_widget(self.affichage_erreur)
+                self.fenetre.add_widget(self.bouton_retour)
+            else:
+                self.afficher_resultat()
 
     def afficher_resultat(self):
         '''Vide la fenêtre et affiche les resultats'''
@@ -257,14 +274,14 @@ class MainApp(App):
             i = 1
             for bus in self.retour[ville]:
                 if ville == self.ville_depart:
-                    self.affichage_horaire_depart = Label(text='[color=682279]Départ à '+self.retour[ville]['bus'+str(i)][1]+'[/color]',
+                    self.affichage_horaire_depart = Label(text='[color=682279]'+'Départ à '+self.retour[ville]['bus'+str(i)][1]+'[/color]',
                         markup= True,
                         font_size= 30,
                         pos_hint={'x': -0.2, 'center_y': 0.70-i/16})
                     self.fenetre.add_widget(self.affichage_horaire_depart)
                     i += 1
                 else:
-                    self.affichage_horaire_arriver = Label(text='[color=682279]Arrivée à '+self.retour[ville]['bus'+str(i)][1]+'[/color]',
+                    self.affichage_horaire_arriver = Label(text='[color=682279]'+'Arrivée à '+self.retour[ville]['bus'+str(i)][1]+'[/color]',
                         markup= True,
                         font_size= 30,
                         pos_hint={'x': 0.2, 'center_y': 0.70-i/16})
