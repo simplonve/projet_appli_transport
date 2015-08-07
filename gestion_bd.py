@@ -63,6 +63,7 @@ class Insert(object):
             ligne_tab = ligne_tab.split(';')
             tab_fichier[j] = ligne_tab
 
+        print(tab_fichier)
         return tab_fichier
 
     def suppr_inutile(self, tableau):
@@ -275,6 +276,7 @@ class Select(object):
         self.depart = self.select_horaire(self.depart)
         self.arriver = self.select_horaire(self.arriver)
         self.retour = self.mise_en_forme(self.depart, self.arriver)
+        self.bus_possible = self.test_bus()
 
     def init_lignes(self):
         '''Initialise le dictionnaire contenant les objets ligne'''
@@ -324,7 +326,7 @@ class Select(object):
             buffer_depart = []
             buffer_arriver = []
             if horaire[0] == self.ville_depart:
-                if horaire[:3] == ['LE CHEYLARD', 'Collège St Louis', '0']:continue
+                if horaire[:3] == ['LE CHEYLARD', 'Collège St Louis', '0']:continue #Cas particulier
                 for index in self.index_jour:
                     buffer_depart.append(horaire[index])
             elif horaire[0] == self.ville_arriver:
@@ -403,6 +405,12 @@ class Select(object):
 
         return dico_retour
 
+    def test_bus(self):
+        if len(self.depart) == 2 or len(self.arriver) == 2:
+            return False
+        else:
+            return True
+
 ################################################
 '''Section fonctions app'''
 
@@ -422,7 +430,7 @@ def select_villes(lettre_choisi):
     villes_aller.sort()
     return villes_aller
 
-def select_alphabet():
+def select_alphabet_ville_depart():
     '''Recupère la liste des villes et la renvoi sous forme de tableau'''
     villes_aller = []
     periode = ['scol', 'vac_ete', 'autres_vac']
@@ -433,6 +441,31 @@ def select_alphabet():
                     for i in range(len(row)):
                         if row[i][0] not in villes_aller and row[i][0] not in periode:
                                 villes_aller.append(row[i][0])
+    villes_aller.sort()
+    alphabet_retour = []
+    alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    for ville in villes_aller:
+        if ville[0] in alphabet and ville[0] not in alphabet_retour: alphabet_retour.append(ville[0])
+    return alphabet_retour
+
+def select_alphabet_ville_arriver(ville_selectionne):
+    '''Recupère la liste des villes et la renvoi sous forme de tableau'''
+    villes_aller = []
+    periode = ['scol', 'vac_ete', 'autres_vac']
+    for ligne in Data.lignes:
+        for sens in Data.lignes[ligne]:
+            if sens == 'aller':
+                for row in Data.lignes[ligne][sens]:
+                    for i in range(len(row)):
+                        if row[i][0] == ville_selectionne:
+                            bonne_ligne = Ligne(ligne)
+                            break
+                        else:
+                            continue
+
+    for ville in bonne_ligne.villes_aller:
+        if ville not in villes_aller:
+            villes_aller.append(ville)
     villes_aller.sort()
     alphabet_retour = []
     alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -457,17 +490,22 @@ def select_arrets(ville_selectionne):
 
 def select_seconde_villes(ville_selectionne, lettre_choisi):
     '''Recupère la liste des villes et la renvoi sous forme de tableau'''
-    periode = ['scol', 'vac_ete', 'autres_vac']
-
     villes = []
     for ligne in Data.lignes:
         for sens in Data.lignes[ligne]:
             if sens == 'aller':
                 for row in Data.lignes[ligne][sens]:
                     for i in range(len(row)):
-                        if row[i][0] not in villes and row[i][0] not in periode:
-                            if row[i][0][0] == lettre_choisi and row[i][0] != ville_selectionne:
-                                villes.append(row[i][0])
+                        if row[i][0] == ville_selectionne:
+                            bonne_ligne = Ligne(ligne)
+                            break
+                        else:
+                            continue
+
+    for ville in bonne_ligne.villes_retour:
+        if ville not in villes:
+            if ville[0] == lettre_choisi and ville != ville_selectionne:
+                villes.append(ville)
     villes_retour = villes
     villes_retour.sort()
     return villes_retour
@@ -482,24 +520,30 @@ def select_horaire(depart, arret_depart, arriver, arret_arriver):
     if depart != None or arriver != None:
         try:
             selection = Select(depart, arret_depart, arriver, arret_arriver)
-            return selection.retour
+            return selection.bus_possible, selection.retour
         except:
             return 'ERREUR'
 
 ################################################
+'''Section de test'''
 
 if __name__ == '__main__':#lignes de test
     #print('1-select 2-insert')
     #choix = input()
     choix = '1'
     if choix == '1':
-        print(select_horaire('BAIX', 'Entrée Nord', 'LE CHEYLARD', 'Gendarmerie'))
-        #print(select_horaire('LE CHEYLARD', 'Gendarmerie', 'CHARMES', 'Centre'))
+        #print(select_seconde_villes('BAIX', 'M'))
+        #print(select_alphabet_ville_arriver('LE CHEYLARD'))
+        test = Select('BAIX', 'Centre', 'MONTELIMAR', 'Gare SNCF')
+        print(test.retour)
         #for row in test_select.retour: print(row, test_select.retour[row])
         #for row in test_select.depart: print(row)
         #for row in test_select.arriver: print(row)
 
-        #main()
     elif choix == '2':
-        insertion = Insert()
-        insertion.insert()
+        try:
+            insertion = Insert()
+            insertion.insert()
+            print('Insertion réussi')
+        except:
+            print('Insertion échouer')
