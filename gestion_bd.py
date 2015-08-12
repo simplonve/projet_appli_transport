@@ -534,7 +534,7 @@ if __name__ == '__main__':#lignes de test
     if choix == '1':
         #print(select_seconde_villes('BAIX', 'M'))
         #print(select_alphabet_ville_arriver('LE CHEYLARD'))
-        test = Select('BAIX', 'Centre', 'MONTELIMAR', 'Gare SNCF')
+        test = Select('CHARMES', 'Centre', 'LE CHEYLARD', 'Gendarmerie')
         print(test.retour)
         #for row in test_select.retour: print(row, test_select.retour[row])
         #for row in test_select.depart: print(row)

@@ -80,11 +80,15 @@ class MainApp(App):
                     pos_hint={'x': 0, 'center_y': 0.55})
 
         self.init_bouton_label_ville_depart()
+        self.init_bouton_retour(0.1, 0.1)
+
+        self.bouton_retour.bind(on_press=self.retour_main)
         self.bouton_label_ville_depart.bind(on_press=self.afficher_alphabet)
 
         self.fenetre.add_widget(self.titre)
-        self.fenetre.add_widget(self.bouton_label_ville_depart)
+        self.fenetre.add_widget(self.bouton_retour)
         self.fenetre.add_widget(self.affichage_date)
+        self.fenetre.add_widget(self.bouton_label_ville_depart)
 
     def pose_choix_ville_arriver(self):
         self.fenetre.clear_widgets()
@@ -95,9 +99,14 @@ class MainApp(App):
                     pos_hint={'x': 0, 'center_y': 0.45})
 
         self.init_bouton_label_ville_arriver()
+        self.init_bouton_retour(0.1, 0.1)
+
+        self.bouton_retour.bind(on_press=self.retour_main)
         self.bouton_label_ville_arriver.bind(on_press=self.afficher_alphabet)
 
+
         self.fenetre.add_widget(self.titre)
+        self.fenetre.add_widget(self.bouton_retour)
         self.fenetre.add_widget(self.affichage_date)
         self.fenetre.add_widget(self.affichage_ville_depart)
         self.fenetre.add_widget(self.bouton_label_ville_arriver)
@@ -118,23 +127,17 @@ class MainApp(App):
                     size_hint=(.3, .07),
                     pos_hint={'x': 0.35, 'center_y': 0.1})
 
+        self.init_bouton_retour(0.1, 0.1)
+
+        self.bouton_retour.bind(on_press=self.retour_main)
         self.bouton_recherche.bind(on_press=self.recherche)
 
         self.fenetre.add_widget(self.titre)
+        self.fenetre.add_widget(self.bouton_retour)
         self.fenetre.add_widget(self.affichage_date)
+        self.fenetre.add_widget(self.bouton_recherche)
         self.fenetre.add_widget(self.affichage_ville_depart)
         self.fenetre.add_widget(self.affichage_ville_arriver)
-        self.fenetre.add_widget(self.bouton_recherche)
-
-#    def init_date(self):
-#        '''Initialise la date'''
-#        objet_date = datetime.now()
-#        if len(str(objet_date.month)) == 1:
-#            mois = '0' + str(objet_date.month)
-#        else:
-#            mois = str(objet_date.month)
-#        date = str(objet_date.day)+'/'+mois+'/'+str(objet_date.year)
-#        return date
 
     def init_list_adapter_alphabet(self):
         ''''Initialise les données de la liste de l'alphabet'''
@@ -179,7 +182,7 @@ class MainApp(App):
                 background_color=(1, 1, 1, 1),
                 markup= True,
                 size_hint=(0.3,0.07),
-                pos_hint={'x': 0.3, 'center_y': 0.4})
+                pos_hint={'x': 0.35, 'center_y': 0.4})
 
     def init_bouton_label_ville_arriver(self):
         '''Initialise le bouton ville d'arriver'''
@@ -189,7 +192,7 @@ class MainApp(App):
                 font_name= "fonts/Soft Elegance.ttf",
                 background_color=(1, 1, 1, 1),
                 size_hint=(0.3,0.07),
-                pos_hint={'x': 0.3, 'center_y': 0.25})
+                pos_hint={'x': 0.35, 'center_y': 0.25})
 
     def afficher_alphabet(self, value):
         '''Affiche la liste de l'alphabet'''
@@ -281,6 +284,15 @@ class MainApp(App):
         self.fenetre.clear_widgets()
         MainApp().run()
 
+    def init_bouton_retour(self, pos_x, pos_y):
+        '''Initialise le bouton de réinitialisation de l'app'''
+        self.bouton_retour = Button(text='[color=682279]Retour[/color]',
+                font_size= 35,
+                font_name= "fonts/Soft Elegance.ttf",
+                markup= True,
+                size_hint=(0.2,0.07),
+                pos_hint={'x': pos_x, 'center_y': pos_y})
+
     def recherche(self, value):
         '''Le select général'''
         if self.label_ville_depart != 'Ville de départ !' and self.label_ville_arriver != 'Ville d\'arriver !':
@@ -293,12 +305,7 @@ class MainApp(App):
                         font_size= 35,
                         pos_hint={'x': 0, 'center_y': 0.60})
 
-                self.bouton_retour = Button(text='[color=682279]Retour[/color]',
-                        font_size= 35,
-                        font_name= "fonts/Soft Elegance.ttf",
-                        markup= True,
-                        size_hint=(0.2,0.07),
-                        pos_hint={'x': 0.3, 'center_y': 0.4})
+                self.init_bouton_retour(0.42, 0.4)
 
                 self.bouton_retour.bind(on_press=self.retour_main)
                 self.fenetre.add_widget(self.affichage_erreur)
@@ -353,6 +360,11 @@ class MainApp(App):
                     self.fenetre.add_widget(self.affichage_horaire_arriver)
                     i += 1
 
+        self.init_bouton_retour(0.42, 0.1)
+
+        self.bouton_retour.bind(on_press=self.retour_main)
+
+        self.fenetre.add_widget(self.bouton_retour)
         self.fenetre.add_widget(self.affichage_ville_depart)
         self.fenetre.add_widget(self.affichage_ville_arriver)
         self.fenetre.add_widget(self.affichage_arret_depart)
